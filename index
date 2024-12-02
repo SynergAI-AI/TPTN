@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TPTN - TransPacific Trade Nexus</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+        }
+        header {
+            background: #003366;
+            color: #fff;
+            padding: 10px 20px;
+            text-align: center;
+        }
+        nav {
+            margin-top: 10px;
+        }
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+        section {
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+        }
+        .hero {
+            text-align: center;
+            padding: 50px 20px;
+            background: #f4f4f4;
+        }
+        .hero h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .cta-button {
+            display: inline-block;
+            margin: 10px;
+            padding: 10px 20px;
+            color: #fff;
+            background: #003366;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+            margin-top: 20px;
+        }
+        footer {
+            background: #003366;
+            color: #fff;
+            text-align: center;
+            padding: 10px 20px;
+            margin-top: 20px;
+        }
+        form {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #f9f9f9;
+        }
+        form input, form textarea, form button {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        form button {
+            background: #003366;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>TransPacific Trade Nexus (TPTN)</h1>
+        <nav>
+            <a href="index.html">Home</a> |
+            <a href="portal.html">Portal</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <h1>Connecting Canada and ASEAN for a Sustainable Trade Future</h1>
+        <p>Discover a platform that bridges trusted businesses and removes barriers for seamless cross-border trade.</p>
+        <a href="#why-trade" class="cta-button">Explore Opportunities</a>
+        <a href="#how-it-works" class="cta-button">Learn More</a>
+    </section>
+
+    <section id="why-trade">
+        <h2>Why ASEAN-Canada Trade?</h2>
+        <p>TPTN bridges the gap between Canada’s expertise in sustainable industries and ASEAN’s dynamic, growing markets.</p>
+        <img src="asean_population_growth.png" alt="ASEAN Population Growth">
+        <img src="gdp_projections.png" alt="GDP Projections">
+    </section>
+
+    <section id="how-it-works">
+        <h2>How TPTN Works</h2>
+        <ol>
+            <li>Access Pre-Vetted Suppliers: Trusted manufacturers, service providers, and more.</li>
+            <li>AI-Powered Insights: Market trends, partnership recommendations, and cross-border opportunities.</li>
+            <li>Regulatory Assistance: Legal, compliance, and customs support for smooth transactions.</li>
+        </ol>
+        <img src="sectoral_growth.png" alt="Sectoral Growth in ASEAN">
+    </section>
+
+<section id="contact">
+    <h2>Contact Us</h2>
+    <form action="https://formspree.io/f/mqakwlje" method="POST">
+        <input type="text" name="name" placeholder="Your Name" required>
+        <input type="email" name="email" placeholder="Your Email" required>
+        <textarea name="message" placeholder="Your Message" required></textarea>
+        <!-- Redirect to a thank-you page after submission -->
+        <input type="hidden" name="_redirect" value="https://your-username.github.io/repository-name/thank-you.html">
+        <button type="submit">Send Message</button>
+    </form>
+</section>
+
+    <footer>
+        <p>&copy; 2024 TransPacific Trade Nexus. All Rights Reserved.</p>
+        <p>Email: <a href="mailto:info@synergai.ai" style="color: #fff;">info@synergai.ai</a></p>
+    </footer>
+</body>
+</html>
