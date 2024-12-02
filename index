@@ -3,125 +3,275 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TPTN - TransPacific Trade Nexus</title>
+    <title>TransPacific Trade Nexus</title>
     <style>
-        body {
-            font-family: Arial, sans-serif;
+        :root {
+            --primary: #1a365d;
+            --secondary: #2b6cb0;
+            --accent: #4299e1;
+            --light: #ebf8ff;
+            --dark: #2d3748;
+        }
+
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
             line-height: 1.6;
+            color: var(--dark);
         }
-        header {
-            background: #003366;
-            color: #fff;
-            padding: 10px 20px;
-            text-align: center;
-        }
-        nav {
-            margin-top: 15px;
-        }
-        nav a {
-            color: #fff;
-            text-decoration: none;
-            margin: 0 10px;
-        }
-        .hero {
-            background: #f4f4f4;
-            padding: 20px;
-            text-align: center;
-        }
-        .hero h2 {
-            color: #003366;
-        }
-        .hero .btn-group {
-            margin-top: 15px;
-        }
-        .hero .btn {
-            display: inline-block;
-            padding: 10px 20px;
-            margin: 5px;
-            background: #003366;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-        }
-        .hero .btn:hover {
-            background: #0055aa;
-        }
+
         section {
-            padding: 20px;
-            margin: 20px auto;
-            max-width: 900px;
+            padding: 4rem 2rem;
         }
-        .footer {
-            background: #003366;
-            color: #fff;
-            text-align: center;
-            padding: 10px 0;
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
         }
-        .footer a {
-            color: #fff;
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.375rem;
             text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-primary {
+            background: white;
+            color: var(--primary);
+        }
+
+        .btn-secondary {
+            background: var(--accent);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        /* About Section */
+        .about {
+            background: var(--light);
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .about-card {
+            background: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        /* How It Works Section */
+        .features {
+            background: white;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+
+        .feature-card {
+            padding: 2rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+        }
+
+        /* Contact Form */
+        .contact {
+            background: var(--light);
+        }
+
+        .form {
+            max-width: 600px;
+            margin: 2rem auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.375rem;
+            font-size: 1rem;
+        }
+
+        .form-group textarea {
+            min-height: 150px;
+        }
+
+        /* Footer */
+        footer {
+            background: var(--primary);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+
+            .btn-group {
+                flex-direction: column;
+            }
+
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
         }
     </style>
 </head>
 <body>
-    <header>
-        <h1>TransPacific Trade Nexus (TPTN)</h1>
-        <nav>
-            <a href="#about">About TPTN</a>
-            <a href="#how-it-works">How It Works</a>
-            <a href="#contact">Contact Us</a>
-        </nav>
-    </header>
-    <div class="hero">
-        <h2>Empowering Global Trade with Innovation</h2>
-        <p>Simplifying cross-border trade between Canada and ASEAN with trusted partners and AI-driven insights.</p>
-        <div class="btn-group">
-            <a href="#opportunities" class="btn">Explore Opportunities</a>
-            <a href="#white-paper" class="btn" onclick="openWhitePaper()">Read White Paper</a>
-            <a href="portal.html" class="btn">Go to Portal</a> <!-- Link to the portal page -->
+    <section class="hero" id="home">
+        <div class="container">
+            <h1>Empowering Global Trade with Innovation</h1>
+            <p>Simplifying cross-border trade between Canada and ASEAN with trusted partners and AI-driven insights.</p>
+            <div class="btn-group">
+                <a href="#opportunities" class="btn btn-primary">Explore Opportunities</a>
+                <a href="#" class="btn btn-secondary" id="whitepaper">Read White Paper</a>
+                <a href="#portal" class="btn btn-secondary">Go to Portal</a>
+            </div>
         </div>
-    </div>
-    <section id="about">
-        <h2>About TPTN</h2>
-        <p>TPTN is more than a platform; it is a trade ecosystem designed to connect businesses across Canada and ASEAN through trusted suppliers, AI insights, and regulatory support.</p>
-        <h3>Our Mission</h3>
-        <p>Empowering businesses by providing market intelligence, streamlining trade processes, and fostering sustainable partnerships.</p>
-        <h3>Industries We Serve</h3>
-        <p>Green energy, agriculture, technology, and SMEs, ensuring tailored solutions to unique trade challenges.</p>
-        <h3>Technology</h3>
-        <p>AI-powered market insights and blockchain for secure transactions, fostering transparency and trust.</p>
     </section>
-    <section id="how-it-works">
-        <h2>How It Works</h2>
-        <ul>
-            <li><strong>Discover Trusted Suppliers:</strong> Access pre-vetted manufacturers and service providers with verified profiles and compliance certifications.</li>
-            <li><strong>AI-Driven Insights:</strong> Leverage market trends and predictive analytics to make informed decisions.</li>
-            <li><strong>Navigate Regulations:</strong> Simplify cross-border transactions with comprehensive legal and regulatory assistance.</li>
-        </ul>
+
+    <section class="about" id="about">
+        <div class="container">
+            <h2>About TPTN</h2>
+            <div class="about-grid">
+                <div class="about-card">
+                    <h3>Our Mission</h3>
+                    <p>Empowering businesses by providing market intelligence, streamlining trade processes, and fostering sustainable partnerships.</p>
+                </div>
+                <div class="about-card">
+                    <h3>Industries We Serve</h3>
+                    <p>Green energy, agriculture, technology, and SMEs, ensuring tailored solutions to unique trade challenges.</p>
+                </div>
+                <div class="about-card">
+                    <h3>Technology</h3>
+                    <p>AI-powered market insights and blockchain for secure transactions, fostering transparency and trust.</p>
+                </div>
+            </div>
+        </div>
     </section>
-    <section id="contact">
-        <h2>Contact Us</h2>
-        <form action="https://formspree.io/f/mqakwlje" method="POST">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name" required placeholder="Your Name"><br>
-            <label for="email">Email:</label>
-            <input type="email" id="email" name="email" required placeholder="Your Email"><br>
-            <label for="message">Message:</label>
-            <textarea id="message" name="message" required placeholder="Your Message"></textarea><br>
-            <button type="submit">Send Message</button>
-        </form>
+
+    <section class="features" id="how-it-works">
+        <div class="container">
+            <h2>How It Works</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <h3>Discover Trusted Suppliers</h3>
+                    <p>Access pre-vetted manufacturers and service providers with verified profiles and compliance certifications.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>AI-Driven Insights</h3>
+                    <p>Leverage market trends and predictive analytics to make informed decisions.</p>
+                </div>
+                <div class="feature-card">
+                    <h3>Navigate Regulations</h3>
+                    <p>Simplify cross-border transactions with comprehensive legal and regulatory assistance.</p>
+                </div>
+            </div>
+        </div>
     </section>
-    <footer class="footer">
-        <p>&copy; 2024 TransPacific Trade Nexus. All Rights Reserved.</p>
-        <p>Email: <a href="mailto:info@synergai.ai">info@synergai.ai</a></p>
-        <p><a href="https://www.linkedin.com/company/synerg-ai/">Visit our LinkedIn Page</a></p>
+
+    <section class="contact" id="contact">
+        <div class="container">
+            <h2>Contact Us</h2>
+            <form class="form" action="https://formspree.io/f/mqakwlje" method="POST">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+                <div class="form-group">
+                    <label for="message">Message</label>
+                    <textarea id="message" name="message" required></textarea>
+                </div>
+                <button type="submit" class="btn btn-primary">Send Message</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 TransPacific Trade Nexus. All Rights Reserved.</p>
+            <p>Contact: <a href="mailto:info@synergai.ai">info@synergai.ai</a></p>
+            <p>Follow us on <a href="https://www.linkedin.com/company/synerg-ai/" target="_blank" rel="noopener">LinkedIn</a></p>
+        </div>
     </footer>
+
     <script>
-        function openWhitePaper() {
-            window.open("whitepaper.html", "_blank", "width=800,height=600");
-        }
+        document.getElementById('whitepaper').addEventListener('click', function(e) {
+            e.preventDefault();
+            window.open('[YOUR WHITE PAPER URL]', '_blank');
+        });
     </script>
 </body>
 </html>
