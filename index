@@ -18,67 +18,50 @@
             text-align: center;
         }
         nav {
-            margin-top: 10px;
+            margin-top: 15px;
         }
         nav a {
             color: #fff;
             text-decoration: none;
             margin: 0 10px;
         }
-        section {
-            padding: 20px;
-            max-width: 800px;
-            margin: auto;
-        }
         .hero {
-            text-align: center;
-            padding: 50px 20px;
             background: #f4f4f4;
+            padding: 20px;
+            text-align: center;
         }
-        .hero h1 {
-            font-size: 2.5em;
-            margin-bottom: 10px;
+        .hero h2 {
+            color: #003366;
         }
-        .cta-button {
+        .hero .btn-group {
+            margin-top: 15px;
+        }
+        .hero .btn {
             display: inline-block;
-            margin: 10px;
             padding: 10px 20px;
-            color: #fff;
+            margin: 5px;
             background: #003366;
+            color: #fff;
             text-decoration: none;
             border-radius: 5px;
         }
-        img {
-            max-width: 100%;
-            height: auto;
-            margin-top: 20px;
+        .hero .btn:hover {
+            background: #0055aa;
         }
-        footer {
+        section {
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 900px;
+        }
+        .footer {
             background: #003366;
             color: #fff;
             text-align: center;
-            padding: 10px 20px;
-            margin-top: 20px;
+            padding: 10px 0;
         }
-        form {
-            max-width: 400px;
-            margin: auto;
-            padding: 20px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            background: #f9f9f9;
-        }
-        form input, form textarea, form button {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        form button {
-            background: #003366;
-            color: white;
-            cursor: pointer;
+        .footer a {
+            color: #fff;
+            text-decoration: none;
         }
     </style>
 </head>
@@ -86,50 +69,59 @@
     <header>
         <h1>TransPacific Trade Nexus (TPTN)</h1>
         <nav>
-            <a href="index.html">Home</a> |
-            <a href="portal.html">Portal</a>
+            <a href="#about">About TPTN</a>
+            <a href="#how-it-works">How It Works</a>
+            <a href="#contact">Contact Us</a>
         </nav>
     </header>
-
-    <section class="hero">
-        <h1>Connecting Canada and ASEAN for a Sustainable Trade Future</h1>
-        <p>Discover a platform that bridges trusted businesses and removes barriers for seamless cross-border trade.</p>
-        <a href="#why-trade" class="cta-button">Explore Opportunities</a>
-        <a href="#how-it-works" class="cta-button">Learn More</a>
+    <div class="hero">
+        <h2>Empowering Global Trade with Innovation</h2>
+        <p>Simplifying cross-border trade between Canada and ASEAN with trusted partners and AI-driven insights.</p>
+        <div class="btn-group">
+            <a href="#opportunities" class="btn">Explore Opportunities</a>
+            <a href="#white-paper" class="btn" onclick="openWhitePaper()">Read White Paper</a>
+            <a href="portal.html" class="btn">Go to Portal</a> <!-- Link to the portal page -->
+        </div>
+    </div>
+    <section id="about">
+        <h2>About TPTN</h2>
+        <p>TPTN is more than a platform; it is a trade ecosystem designed to connect businesses across Canada and ASEAN through trusted suppliers, AI insights, and regulatory support.</p>
+        <h3>Our Mission</h3>
+        <p>Empowering businesses by providing market intelligence, streamlining trade processes, and fostering sustainable partnerships.</p>
+        <h3>Industries We Serve</h3>
+        <p>Green energy, agriculture, technology, and SMEs, ensuring tailored solutions to unique trade challenges.</p>
+        <h3>Technology</h3>
+        <p>AI-powered market insights and blockchain for secure transactions, fostering transparency and trust.</p>
     </section>
-
-    <section id="why-trade">
-        <h2>Why ASEAN-Canada Trade?</h2>
-        <p>TPTN bridges the gap between Canada’s expertise in sustainable industries and ASEAN’s dynamic, growing markets.</p>
-        <img src="asean_population_growth.png" alt="ASEAN Population Growth">
-        <img src="gdp_projections.png" alt="GDP Projections">
-    </section>
-
     <section id="how-it-works">
-        <h2>How TPTN Works</h2>
-        <ol>
-            <li>Access Pre-Vetted Suppliers: Trusted manufacturers, service providers, and more.</li>
-            <li>AI-Powered Insights: Market trends, partnership recommendations, and cross-border opportunities.</li>
-            <li>Regulatory Assistance: Legal, compliance, and customs support for smooth transactions.</li>
-        </ol>
-        <img src="sectoral_growth.png" alt="Sectoral Growth in ASEAN">
+        <h2>How It Works</h2>
+        <ul>
+            <li><strong>Discover Trusted Suppliers:</strong> Access pre-vetted manufacturers and service providers with verified profiles and compliance certifications.</li>
+            <li><strong>AI-Driven Insights:</strong> Leverage market trends and predictive analytics to make informed decisions.</li>
+            <li><strong>Navigate Regulations:</strong> Simplify cross-border transactions with comprehensive legal and regulatory assistance.</li>
+        </ul>
     </section>
-
-<section id="contact">
-    <h2>Contact Us</h2>
-    <form action="https://formspree.io/f/mqakwlje" method="POST">
-        <input type="text" name="name" placeholder="Your Name" required>
-        <input type="email" name="email" placeholder="Your Email" required>
-        <textarea name="message" placeholder="Your Message" required></textarea>
-        <!-- Redirect to a thank-you page after submission -->
-        <input type="hidden" name="_redirect" value="https://your-username.github.io/repository-name/thank-you.html">
-        <button type="submit">Send Message</button>
-    </form>
-</section>
-
-    <footer>
+    <section id="contact">
+        <h2>Contact Us</h2>
+        <form action="https://formspree.io/f/mqakwlje" method="POST">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required placeholder="Your Name"><br>
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required placeholder="Your Email"><br>
+            <label for="message">Message:</label>
+            <textarea id="message" name="message" required placeholder="Your Message"></textarea><br>
+            <button type="submit">Send Message</button>
+        </form>
+    </section>
+    <footer class="footer">
         <p>&copy; 2024 TransPacific Trade Nexus. All Rights Reserved.</p>
-        <p>Email: <a href="mailto:info@synergai.ai" style="color: #fff;">info@synergai.ai</a></p>
+        <p>Email: <a href="mailto:info@synergai.ai">info@synergai.ai</a></p>
+        <p><a href="https://www.linkedin.com/company/synerg-ai/">Visit our LinkedIn Page</a></p>
     </footer>
+    <script>
+        function openWhitePaper() {
+            window.open("whitepaper.html", "_blank", "width=800,height=600");
+        }
+    </script>
 </body>
 </html>
