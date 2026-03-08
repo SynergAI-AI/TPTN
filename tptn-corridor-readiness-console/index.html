@@ -1,0 +1,1491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TPTN Corridor Readiness Console</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-navy: #003366;
+            --primary-red: #D32F2F;
+            --bg-gray: #F5F5F5;
+            --border-gray: #E0E0E0;
+            --text-primary: #212121;
+            --text-secondary: #757575;
+            --success-green: #2E7D32;
+            --warning-orange: #F57C00;
+            --white: #FFFFFF;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background-color: var(--bg-gray);
+            color: var(--text-primary);
+            line-height: 1.6;
+        }
+
+        .header {
+            background-color: var(--primary-navy);
+            color: var(--white);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header-title {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .header-subtitle {
+            font-size: 0.875rem;
+            opacity: 0.9;
+            margin-top: 0.25rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .lang-toggle {
+            background-color: rgba(255,255,255,0.2);
+            border: 1px solid rgba(255,255,255,0.3);
+            color: var(--white);
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.875rem;
+            transition: background-color 0.2s;
+        }
+
+        .lang-toggle:hover {
+            background-color: rgba(255,255,255,0.3);
+        }
+
+        .user-info {
+            font-size: 0.875rem;
+            opacity: 0.9;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .nav-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+            border-bottom: 2px solid var(--border-gray);
+        }
+
+        .nav-tab {
+            padding: 0.75rem 1.5rem;
+            background: none;
+            border: none;
+            border-bottom: 3px solid transparent;
+            cursor: pointer;
+            font-size: 1rem;
+            color: var(--text-secondary);
+            transition: all 0.2s;
+        }
+
+        .nav-tab:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-tab.active {
+            color: var(--primary-navy);
+            border-bottom-color: var(--primary-navy);
+            font-weight: 600;
+        }
+
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 8px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .card-header {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--primary-navy);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--white);
+            border-radius: 8px;
+            padding: 1.5rem;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .stat-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary-navy);
+        }
+
+        .stat-change {
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+
+        .stat-change.positive {
+            color: var(--success-green);
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .form-input,
+        .form-select,
+        .form-textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid var(--border-gray);
+            border-radius: 4px;
+            font-size: 1rem;
+            font-family: inherit;
+        }
+
+        .form-input:focus,
+        .form-select:focus,
+        .form-textarea:focus {
+            outline: none;
+            border-color: var(--primary-navy);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 4px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-navy);
+            color: var(--white);
+        }
+
+        .btn-primary:hover {
+            background-color: #002244;
+        }
+
+        .btn-secondary {
+            background-color: var(--border-gray);
+            color: var(--text-primary);
+        }
+
+        .btn-secondary:hover {
+            background-color: #D0D0D0;
+        }
+
+        .btn-danger {
+            background-color: var(--primary-red);
+            color: var(--white);
+        }
+
+        .btn-danger:hover {
+            background-color: #B71C1C;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .table th,
+        .table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-gray);
+        }
+
+        .table th {
+            background-color: var(--bg-gray);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .table tr:hover {
+            background-color: #FAFAFA;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .status-ready {
+            background-color: #E8F5E9;
+            color: var(--success-green);
+        }
+
+        .status-pending {
+            background-color: #FFF3E0;
+            color: var(--warning-orange);
+        }
+
+        .status-exception {
+            background-color: #FFEBEE;
+            color: var(--primary-red);
+        }
+
+        .status-incomplete {
+            background-color: #E0E0E0;
+            color: var(--text-secondary);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: var(--border-gray);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background-color: var(--success-green);
+            transition: width 0.3s;
+        }
+
+        .checklist {
+            list-style: none;
+        }
+
+        .checklist-item {
+            display: flex;
+            align-items: center;
+            padding: 0.75rem;
+            border-bottom: 1px solid var(--border-gray);
+        }
+
+        .checklist-item:last-child {
+            border-bottom: none;
+        }
+
+        .checklist-icon {
+            width: 24px;
+            height: 24px;
+            margin-right: 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-weight: bold;
+        }
+
+        .checklist-icon.complete {
+            background-color: var(--success-green);
+            color: var(--white);
+        }
+
+        .checklist-icon.incomplete {
+            background-color: var(--border-gray);
+            color: var(--text-secondary);
+        }
+
+        .checklist-icon.warning {
+            background-color: var(--warning-orange);
+            color: var(--white);
+        }
+
+        .exception-card {
+            border-left: 4px solid var(--primary-red);
+            padding: 1rem;
+            margin-bottom: 1rem;
+            background-color: #FFEBEE;
+        }
+
+        .exception-header {
+            font-weight: 600;
+            color: var(--primary-red);
+            margin-bottom: 0.5rem;
+        }
+
+        .exception-details {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+        }
+
+        .audit-log {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+
+        .audit-entry {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-gray);
+        }
+
+        .audit-entry:last-child {
+            border-bottom: none;
+        }
+
+        .audit-timestamp {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.25rem;
+        }
+
+        .audit-action {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .audit-user {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+
+        .standards-badge {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            background-color: var(--primary-navy);
+            color: var(--white);
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-right: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+
+        .alert-info {
+            background-color: #E3F2FD;
+            color: #1565C0;
+            border-left: 4px solid #1565C0;
+        }
+
+        .alert-warning {
+            background-color: #FFF3E0;
+            color: var(--warning-orange);
+            border-left: 4px solid var(--warning-orange);
+        }
+
+        .document-list {
+            list-style: none;
+        }
+
+        .document-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.75rem;
+            border: 1px solid var(--border-gray);
+            border-radius: 4px;
+            margin-bottom: 0.5rem;
+        }
+
+        .document-name {
+            font-weight: 600;
+        }
+
+        .document-status {
+            font-size: 0.875rem;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+        }
+
+        .empty-state-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        .filter-bar {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            align-items: center;
+        }
+
+        .filter-input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid var(--border-gray);
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+
+        .data-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .data-field {
+            padding: 0.75rem;
+            background-color: var(--bg-gray);
+            border-radius: 4px;
+        }
+
+        .data-field-label {
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.25rem;
+        }
+
+        .data-field-value {
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .confidence-meter {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 0.5rem;
+        }
+
+        .confidence-bar {
+            flex: 1;
+            height: 8px;
+            background-color: var(--border-gray);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+
+        .confidence-fill {
+            height: 100%;
+            background-color: var(--success-green);
+        }
+
+        .confidence-label {
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        @media (max-width: 768px) {
+            .form-row,
+            .data-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-bar {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div>
+            <div class="header-title">TPTN Corridor Readiness Console</div>
+            <div class="header-subtitle">Sovereign digital infrastructure for corridor fluidity and trade-ready execution</div>
+        </div>
+        <div class="header-actions">
+            <button class="lang-toggle" onclick="toggleLanguage()">EN / FR</button>
+            <div class="user-info">Trade Officer | Export Division</div>
+        </div>
+    </header>
+
+    <div class="container">
+        <nav class="nav-tabs">
+            <button class="nav-tab active" onclick="showScreen('dashboard')">Dashboard</button>
+            <button class="nav-tab" onclick="showScreen('intake')">New Shipment</button>
+            <button class="nav-tab" onclick="showScreen('compliance')">Compliance Check</button>
+            <button class="nav-tab" onclick="showScreen('exceptions')">Exception Queue</button>
+            <button class="nav-tab" onclick="showScreen('audit')">Audit Log</button>
+            <button class="nav-tab" onclick="showScreen('readiness')">Readiness Status</button>
+        </nav>
+
+        <!-- Dashboard Screen -->
+        <div id="dashboard" class="screen active">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-label">Shipments Ready</div>
+                    <div class="stat-value">247</div>
+                    <div class="stat-change positive">↑ 12% from last week</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Pending Review</div>
+                    <div class="stat-value">18</div>
+                    <div class="stat-change">Avg. 2.3 days to resolution</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Exceptions Flagged</div>
+                    <div class="stat-value">5</div>
+                    <div class="stat-change">Requires HITL review</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Documentation Complete</div>
+                    <div class="stat-value">93%</div>
+                    <div class="stat-change positive">↑ 8% from baseline</div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Recent Shipments</div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Shipment ID</th>
+                            <th>Exporter</th>
+                            <th>Destination</th>
+                            <th>Status</th>
+                            <th>Last Updated</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>SH-2024-0892</td>
+                            <td>Maple Export Corp</td>
+                            <td>United States</td>
+                            <td><span class="status-badge status-ready">Ready</span></td>
+                            <td>2024-03-06 14:22</td>
+                            <td><button class="btn btn-secondary" onclick="viewShipment('SH-2024-0892')">View</button></td>
+                        </tr>
+                        <tr>
+                            <td>SH-2024-0891</td>
+                            <td>Northern Trade Ltd</td>
+                            <td>European Union</td>
+                            <td><span class="status-badge status-pending">Pending</span></td>
+                            <td>2024-03-06 11:15</td>
+                            <td><button class="btn btn-secondary" onclick="viewShipment('SH-2024-0891')">View</button></td>
+                        </tr>
+                        <tr>
+                            <td>SH-2024-0890</td>
+                            <td>Pacific Exports Inc</td>
+                            <td>Japan</td>
+                            <td><span class="status-badge status-exception">Exception</span></td>
+                            <td>2024-03-05 16:45</td>
+                            <td><button class="btn btn-danger" onclick="showScreen('exceptions')">Review</button></td>
+                        </tr>
+                        <tr>
+                            <td>SH-2024-0889</td>
+                            <td>Atlantic Trading Co</td>
+                            <td>United Kingdom</td>
+                            <td><span class="status-badge status-ready">Ready</span></td>
+                            <td>2024-03-05 09:30</td>
+                            <td><button class="btn btn-secondary" onclick="viewShipment('SH-2024-0889')">View</button></td>
+                        </tr>
+                        <tr>
+                            <td>SH-2024-0888</td>
+                            <td>Great Lakes Commodities</td>
+                            <td>Mexico</td>
+                            <td><span class="status-badge status-incomplete">Incomplete</span></td>
+                            <td>2024-03-04 13:20</td>
+                            <td><button class="btn btn-secondary" onclick="viewShipment('SH-2024-0888')">View</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Standards Alignment</div>
+                <div class="alert alert-info">
+                    This system implements international trade standards to ensure interoperability and compliance.
+                </div>
+                <div>
+                    <span class="standards-badge">MLETR</span>
+                    <span class="standards-badge">UN/CEFACT</span>
+                    <span class="standards-badge">WCO Data Model</span>
+                    <span class="standards-badge">CAN/DGSI 104</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Shipment Intake Screen -->
+        <div id="intake" class="screen">
+            <div class="card">
+                <div class="card-header">New Shipment Intake</div>
+                <div class="alert alert-info">
+                    Enter shipment information once. Data will be structured to standards-aligned records and validated for compliance readiness.
+                </div>
+                
+                <form id="shipmentForm" onsubmit="submitShipment(event)">
+                    <h3 style="margin-bottom: 1rem; color: var(--primary-navy);">Exporter Information</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Company Name *</label>
+                            <input type="text" class="form-input" required placeholder="Enter company name">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Business Number *</label>
+                            <input type="text" class="form-input" required placeholder="e.g., 123456789RC0001">
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Contact Person *</label>
+                            <input type="text" class="form-input" required placeholder="Full name">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Email Address *</label>
+                            <input type="email" class="form-input" required placeholder="contact@company.ca">
+                        </div>
+                    </div>
+
+                    <h3 style="margin: 2rem 0 1rem; color: var(--primary-navy);">Shipment Details</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Destination Country *</label>
+                            <select class="form-select" required>
+                                <option value="">Select destination</option>
+                                <option value="US">United States</option>
+                                <option value="EU">European Union</option>
+                                <option value="UK">United Kingdom</option>
+                                <option value="JP">Japan</option>
+                                <option value="MX">Mexico</option>
+                                <option value="CN">China</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Port of Exit *</label>
+                            <select class="form-select" required>
+                                <option value="">Select port</option>
+                                <option value="vancouver">Port of Vancouver</option>
+                                <option value="montreal">Port of Montreal</option>
+                                <option value="halifax">Port of Halifax</option>
+                                <option value="toronto">Port of Toronto</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Expected Ship Date *</label>
+                            <input type="date" class="form-input" required>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Incoterm *</label>
+                            <select class="form-select" required>
+                                <option value="">Select Incoterm</option>
+                                <option value="FOB">FOB - Free On Board</option>
+                                <option value="CIF">CIF - Cost, Insurance, Freight</option>
+                                <option value="EXW">EXW - Ex Works</option>
+                                <option value="DDP">DDP - Delivered Duty Paid</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <h3 style="margin: 2rem 0 1rem; color: var(--primary-navy);">Product Information</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">HS Code *</label>
+                            <input type="text" class="form-input" required placeholder="e.g., 0201.10.00">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Product Category *</label>
+                            <input type="text" class="form-input" required placeholder="e.g., Agricultural Products">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Product Description *</label>
+                        <textarea class="form-textarea" required placeholder="Detailed description of goods"></textarea>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Quantity *</label>
+                            <input type="number" class="form-input" required placeholder="Enter quantity">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Unit of Measure *</label>
+                            <select class="form-select" required>
+                                <option value="">Select unit</option>
+                                <option value="KG">Kilograms (KG)</option>
+                                <option value="MT">Metric Tons (MT)</option>
+                                <option value="LT">Liters (LT)</option>
+                                <option value="PC">Pieces (PC)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label class="form-label">Total Value (CAD) *</label>
+                            <input type="number" class="form-input" required placeholder="0.00" step="0.01">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Currency *</label>
+                            <select class="form-select" required>
+                                <option value="CAD">CAD - Canadian Dollar</option>
+                                <option value="USD">USD - US Dollar</option>
+                                <option value="EUR">EUR - Euro</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <h3 style="margin: 2rem 0 1rem; color: var(--primary-navy);">Required Documents</h3>
+                    <div class="form-group">
+                        <label class="form-label">Commercial Invoice</label>
+                        <input type="file" class="form-input" accept=".pdf,.jpg,.png">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Certificate of Origin</label>
+                        <input type="file" class="form-input" accept=".pdf,.jpg,.png">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Packing List</label>
+                        <input type="file" class="form-input" accept=".pdf,.jpg,.png">
+                    </div>
+
+                    <div class="btn-group">
+                        <button type="submit" class="btn btn-primary">Submit for Validation</button>
+                        <button type="button" class="btn btn-secondary" onclick="resetForm()">Clear Form</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Compliance Readiness Screen -->
+        <div id="compliance" class="screen">
+            <div class="card">
+                <div class="card-header">Compliance Readiness Check - SH-2024-0891</div>
+                
+                <div class="data-grid">
+                    <div class="data-field">
+                        <div class="data-field-label">Shipment ID</div>
+                        <div class="data-field-value">SH-2024-0891</div>
+                    </div>
+                    <div class="data-field">
+                        <div class="data-field-label">Exporter</div>
+                        <div class="data-field-value">Northern Trade Ltd</div>
+                    </div>
+                    <div class="data-field">
+                        <div class="data-field-label">Destination</div>
+                        <div class="data-field-value">European Union</div>
+                    </div>
+                    <div class="data-field">
+                        <div class="data-field-label">HS Code</div>
+                        <div class="data-field-value">4407.11.01</div>
+                    </div>
+                </div>
+
+                <div style="margin: 2rem 0;">
+                    <h3 style="margin-bottom: 1rem; color: var(--primary-navy);">Overall Readiness Score</h3>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: 85%"></div>
+                    </div>
+                    <div style="text-align: right; margin-top: 0.5rem; font-weight: 600; color: var(--primary-navy);">85% Complete</div>
+                </div>
+
+                <h3 style="margin: 2rem 0 1rem; color: var(--primary-navy);">Validation Checklist</h3>
+                <ul class="checklist">
+                    <li class="checklist-item">
+                        <div class="checklist-icon complete">✓</div>
+                        <div>
+                            <div style="font-weight: 600;">Exporter Information Verified</div>
+                            <div style="font-size: 0.875rem; color: var(--text-secondary);">Business number validated against CBSA registry</div>
+                        </div>
+                    </li>
+                    <li class="checklist-item">
+                        <div class="checklist-icon complete">✓</div>
+                        <div>
+                            <div style="font-weight: 600;">HS Code Classification Valid</div>
+                            <div style="font-size: 0.875rem; color: var(--text-secondary);">Aligned with WCO Harmonized System standards</div>
+                        </div>
+                    </li>
+                    <li class="checklist-item">
+                        <div class="checklist-icon complete">✓</div>
+                        <div>
+                            <div style="font-weight: 600;">Commercial Invoice Attached</div>
+                            <div style="font-size: 0.875rem; color: var(--text-secondary);">Document verified and parsed successfully</div>
+                        </div>
+                    </li>
+                    <li class="checklist-item">
+                        <div class="checklist-icon complete">✓</div>
+                        <div>
+                            <div style="font-weight: 600;">Certificate of Origin Provided</div>
+                            <div style="font-size: 0.875rem; color: var(--text-secondary);">CETA origin requirements satisfied</div>
+                        </div>
+                    </li>
+                    <li class="checklist-item">
+                        <div class="checklist-icon warning">!</div>
+                        <div>
+                            <div style="font-weight: 600;">Export Permit Required</div>
+                            <div style="font-size: 0.875rem; color: var(--text-secondary);">Product category requires GAC export authorization</div>
+                        </div>
+                    </li>
+                    <li class="checklist-item">
+                        <div class="checklist-icon incomplete">○</div>
+                        <div>
+                            <div style="font-weight: 600;">Phytosanitary Certificate Pending</div>
+                            <div style="font-size: 0.875rem; color: var(--text-secondary);">Required for wood product exports to EU</div>
+                        </div>
+                    </li>
+                    <li class="checklist-item">
+                        <div class="checklist-icon complete">✓</div>
+                        <div>
+                            <div style="font-weight: 600;">Product Value Declared</div>
+                            <div style="font-size: 0.875rem; color: var(--text-secondary);">Within normal range for product category</div>
+                        </div>
+                    </li>
+                </ul>
+
+                <div class="alert alert-warning" style="margin-top: 2rem;">
+                    <strong>Action Required:</strong> Two items need attention before shipment can be marked as corridor-ready. Review missing documents and export permit requirements.
+                </div>
+
+                <div class="btn-group">
+                    <button class="btn btn-primary" onclick="alert('Compliance check saved. Exporter notified of missing items.')">Save & Notify Exporter</button>
+                    <button class="btn btn-danger" onclick="showScreen('exceptions')">Escalate to Exception Queue</button>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Document Repository</div>
+                <ul class="document-list">
+                    <li class="document-item">
+                        <div>
+                            <div class="document-name">Commercial Invoice</div>
+                            <div class="document-status" style="color: var(--success-green);">✓ Verified</div>
+                        </div>
+                        <button class="btn btn-secondary">View</button>
+                    </li>
+                    <li class="document-item">
+                        <div>
+                            <div class="document-name">Certificate of Origin (CETA)</div>
+                            <div class="document-status" style="color: var(--success-green);">✓ Verified</div>
+                        </div>
+                        <button class="btn btn-secondary">View</button>
+                    </li>
+                    <li class="document-item">
+                        <div>
+                            <div class="document-name">Packing List</div>
+                            <div class="document-status" style="color: var(--success-green);">✓ Verified</div>
+                        </div>
+                        <button class="btn btn-secondary">View</button>
+                    </li>
+                    <li class="document-item">
+                        <div>
+                            <div class="document-name">Export Permit</div>
+                            <div class="document-status" style="color: var(--warning-orange);">⚠ Required</div>
+                        </div>
+                        <button class="btn btn-primary">Request</button>
+                    </li>
+                    <li class="document-item">
+                        <div>
+                            <div class="document-name">Phytosanitary Certificate</div>
+                            <div class="document-status" style="color: var(--text-secondary);">○ Pending</div>
+                        </div>
+                        <button class="btn btn-primary">Upload</button>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Exception Queue Screen -->
+        <div id="exceptions" class="screen">
+            <div class="card">
+                <div class="card-header">HITL Exception Review Queue</div>
+                <div class="alert alert-info">
+                    These shipments require human-in-the-loop review. System confidence is below threshold or regulatory requirements need manual verification.
+                </div>
+
+                <div class="filter-bar">
+                    <input type="text" class="filter-input" placeholder="Search by shipment ID, exporter, or reason...">
+                    <select class="form-select" style="flex: none; width: 200px;">
+                        <option>All Priorities</option>
+                        <option>High Priority</option>
+                        <option>Medium Priority</option>
+                        <option>Low Priority</option>
+                    </select>
+                </div>
+
+                <div class="exception-card">
+                    <div class="exception-header">SH-2024-0890 - HS Code Classification Uncertainty</div>
+                    <div class="exception-details">
+                        <strong>Exporter:</strong> Pacific Exports Inc | <strong>Destination:</strong> Japan | <strong>Flagged:</strong> 2024-03-05 16:45
+                    </div>
+                    <div class="exception-details">
+                        <strong>Reason:</strong> Product description "Advanced composite materials for aerospace applications" matches multiple HS codes with different duty rates and export control requirements.
+                    </div>
+                    <div class="confidence-meter">
+                        <span class="confidence-label">Classification Confidence:</span>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" style="width: 62%; background-color: var(--warning-orange);"></div>
+                        </div>
+                        <span class="confidence-label">62%</span>
+                    </div>
+                    <div style="margin-top: 1rem;">
+                        <strong>Suggested Classifications:</strong>
+                        <ul style="margin-top: 0.5rem; margin-left: 1.5rem;">
+                            <li>3916.20.00 - Monofilament of polymers (62% confidence)</li>
+                            <li>8803.30.00 - Other parts of aircraft (28% confidence)</li>
+                        </ul>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="resolveException('SH-2024-0890', 'approve')">Approve Classification</button>
+                        <button class="btn btn-secondary" onclick="requestMoreInfo('SH-2024-0890')">Request Clarification</button>
+                        <button class="btn btn-danger" onclick="rejectException('SH-2024-0890')">Reject - Incorrect Data</button>
+                    </div>
+                </div>
+
+                <div class="exception-card">
+                    <div class="exception-header">SH-2024-0887 - Export Control List Match</div>
+                    <div class="exception-details">
+                        <strong>Exporter:</strong> Tech Solutions Canada | <strong>Destination:</strong> China | <strong>Flagged:</strong> 2024-03-04 10:22
+                    </div>
+                    <div class="exception-details">
+                        <strong>Reason:</strong> Product contains encryption technology that may be subject to Export Control List (ECL) restrictions for the declared destination country.
+                    </div>
+                    <div class="confidence-meter">
+                        <span class="confidence-label">ECL Match Confidence:</span>
+                        <div class="confidence-bar">
+                            <div class="confidence-fill" style="width: 91%; background-color: var(--primary-red);"></div>
+                        </div>
+                        <span class="confidence-label">91%</span>
+                    </div>
+                    <div style="margin-top: 1rem;">
+                        <strong>Regulatory Assessment:</strong>
+                        <div style="margin-top: 0.5rem; padding: 0.75rem; background-color: #FFEBEE; border-radius: 4px;">
+                            Product may require GAC export permit under ECL Group 2. Manual review by export control officer recommended before approving shipment readiness.
+                        </div>
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-primary" onclick="escalateToRegulator('SH-2024-0887')">Escalate to GAC Review</button>
+                        <button class="btn btn-secondary" onclick="requestMoreInfo('SH-2024-0887')">Request Technical Specs</button>
+                    </div>
+                </div>
+
+                <div class="exception-card">
+                    <div class="exception-header">SH-2024-0885 - Missing Critical Documentation</div>
+                    <div class="exception-details">
+                        <strong>Exporter:</strong> Maritime Seafood Exports | <strong>Destination:</strong> United States | <strong>Flagged:</strong> 2024-03-03 14:18
+                    </div>
+                    <div class="exception-details">
+                        <strong>Reason:</strong> Perishable seafood shipment missing CFIA health certificate required for US market entry. Shipment departure date is within 48 hours.
+                    </div>
+                    <div style="margin-top: 1rem; padding: 0.75rem; background-color: #FFF3E0; border-radius: 4px;">
+                        <strong>⚠ Time Sensitive:</strong> Departure window expires in 48 hours. Immediate action required to prevent logistics delays.
+                    </div>
+                    <div class="btn-group">
+                        <button class="btn btn-danger" onclick="notifyExporter('SH-2024-0885')">Urgent: Notify Exporter</button>
+                        <button class="btn btn-secondary" onclick="contactCFIA('SH-2024-0885')">Contact CFIA</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Resolution Statistics (Last 30 Days)</div>
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Total Exceptions</div>
+                        <div class="stat-value">42</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Resolved</div>
+                        <div class="stat-value">37</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Avg. Resolution Time</div>
+                        <div class="stat-value">18h</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Currently Pending</div>
+                        <div class="stat-value">5</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Audit Log Screen -->
+        <div id="audit" class="screen">
+            <div class="card">
+                <div class="card-header">Audit & Evidence Trail</div>
+                <div class="alert alert-info">
+                    Complete traceable history of all workflow actions, decisions, and system events. All timestamps are in Eastern Time (ET).
+                </div>
+
+                <div class="filter-bar">
+                    <input type="text" class="filter-input" placeholder="Search by shipment ID, user, or action...">
+                    <select class="form-select" style="flex: none; width: 200px;">
+                        <option>All Actions</option>
+                        <option>Data Entry</option>
+                        <option>Document Upload</option>
+                        <option>Status Change</option>
+                        <option>HITL Review</option>
+                        <option>Approval</option>
+                    </select>
+                    <select class="form-select" style="flex: none; width: 200px;">
+                        <option>Last 7 Days</option>
+                        <option>Last 30 Days</option>
+                        <option>Last 90 Days</option>
+                        <option>All Time</option>
+                    </select>
+                </div>
+
+                <div class="audit-log">
+                    <div class="audit-entry">
+                        <div class="audit-timestamp">2024-03-06 14:22:35 ET</div>
+                        <div class="audit-action">Shipment Status Updated: Ready for Corridor Handoff</div>
+                        <div class="audit-user">System Validation Engine | Shipment: SH-2024-0892</div>
+                        <div style="margin-top: 0.5rem; font-size: 0.875rem; color: var(--text-secondary);">
+                            All compliance checks passed. Documentation complete. Shipment marked as corridor-ready.
+                        </div>
+                    </div>
+
+                    <div class="audit-entry">
+                        <div class="audit-timestamp">2024-03-06 14:18:12 ET</div>
+                        <div class="audit-action">Document Verified: Certificate of Origin</div>
+                        <div class="audit-user">j.smith@cbsa.gc.ca (Trade Officer) | Shipment: SH-2024-0892</div>
+                        <div style="margin-top: 0.5rem; font-size: 0.875rem; color: var(--text-secondary);">
+                            Manual verification completed. USMCA origin requirements satisfied.
+                        </div>
+                    </div>
+
+                    <div class="audit-entry">
+                        <div class="audit-timestamp">2024-03-06 11:45:03 ET</div>
+                        <div class="audit-action">Exception Escalated to HITL Queue</div>
+                        <div class="audit-user">System Validation Engine | Shipment: SH-2024-0890</div>
+                        <div style="margin-top: 0.5rem; font-size: 0.875rem; color: var(--text-secondary);">
+                            HS code classification confidence below threshold (62%). Requires human review.
+                        </div>
+                    </div>
+
+                    <div class="audit-entry">
+                        <div class="audit-timestamp">2024-03-06 11:15:28 ET</div>
+                        <div class="audit-action">Shipment Data Submitted</div>
+                        <div class="audit-user">m.johnson@northerntrade.ca (Exporter) | Shipment: SH-2024-0891</div>
+                        <div style="margin-top: 0.5rem; font-size: 0.875rem; color: var(--text-secondary);">
+                            Initial shipment intake completed. Validation process initiated.
+                        </div>
+                    </div>
+
+                    <div class="audit-entry">
+                        <div class="audit-timestamp">2024-03-06 09:52:14 ET</div>
+                        <div class="audit-action">Document Upload: Commercial Invoice</div>
+                        <div class="audit-user">m.johnson@northerntrade.ca (Exporter) | Shipment: SH-2024-0891</div>
+                        <div style="margin-top: 0.5rem; font-size: 0.875rem; color: var(--text-secondary);">
+                            File: Invoice_NT_20240306.pdf (247 KB) - Parsed successfully using UN/CEFACT standards
+                        </div>
+                    </div>
+
+                    <div class="audit-entry">
+                        <div class="audit-timestamp">2024-03-05 16:45:18 ET</div>
+                        <div class="audit-action">HITL Review Decision: Approved with Conditions</div>
+                        <div class="audit-user">r.chen@gac.gc.ca (Export Control Officer) | Shipment: SH-2024-0887</div>
+                        <div style="margin-top: 0.5rem; font-size: 0.875rem; color: var(--text-secondary);">
+                            Export permit approved. Exporter notified of permit conditions and compliance requirements.
+                        </div>
+                    </div>
+
+                    <div class="audit-entry">
+                        <div class="audit-timestamp">2024-03-05 14:33:42 ET</div>
+                        <div class="audit-action">Standards Validation: HS Code Aligned to WCO Standards</div>
+                        <div class="audit-user">System Validation Engine | Shipment: SH-2024-0889</div>
+                        <div style="margin-top: 0.5rem; font-size: 0.875rem; color: var(--text-secondary);">
+                            HS Code 8471.30.00 validated against WCO Harmonized System 2022 edition.
+                        </div>
+                    </div>
+
+                    <div class="audit-entry">
+                        <div class="audit-timestamp">2024-03-05 11:28:05 ET</div>
+                        <div class="audit-action">Data Structure Mapping: UN/CEFACT Format Applied</div>
+                        <div class="audit-user">System Standards Engine | Shipment: SH-2024-0889</div>
+                        <div style="margin-top: 0.5rem; font-size: 0.875rem; color: var(--text-secondary);">
+                            Shipment data mapped to UN/CEFACT Cross-Industry Invoice (CII) schema for interoperability.
+                        </div>
+                    </div>
+
+                    <div class="audit-entry">
+                        <div class="audit-timestamp">2024-03-05 09:15:33 ET</div>
+                        <div class="audit-action">Exporter Business Number Verified</div>
+                        <div class="audit-user">System Validation Engine | Shipment: SH-2024-0889</div>
+                        <div style="margin-top: 0.5rem; font-size: 0.875rem; color: var(--text-secondary);">
+                            Business number 987654321RC0001 validated against CBSA registry. Company status: Active.
+                        </div>
+                    </div>
+
+                    <div class="audit-entry">
+                        <div class="audit-timestamp">2024-03-04 16:42:19 ET</div>
+                        <div class="audit-action">System Access: User Login</div>
+                        <div class="audit-user">j.smith@cbsa.gc.ca (Trade Officer)</div>
+                        <div style="margin-top: 0.5rem; font-size: 0.875rem; color: var(--text-secondary);">
+                            Authenticated via Government of Canada SSO. Session ID: 8a9f-4e2d-b1c7
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Data Governance & Security</div>
+                <div style="padding: 1rem; background-color: var(--bg-gray); border-radius: 4px;">
+                    <div style="margin-bottom: 0.5rem;"><strong>Data Residency:</strong> All records stored on Canadian sovereign infrastructure</div>
+                    <div style="margin-bottom: 0.5rem;"><strong>Security Standard:</strong> CAN/DGSI 104 compliant</div>
+                    <div style="margin-bottom: 0.5rem;"><strong>Audit Retention:</strong> 7 years (per CBSA regulations)</div>
+                    <div style="margin-bottom: 0.5rem;"><strong>Access Control:</strong> Role-based with multi-factor authentication</div>
+                    <div><strong>Encryption:</strong> AES-256 at rest, TLS 1.3 in transit</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Readiness Status Screen -->
+        <div id="readiness" class="screen">
+            <div class="card">
+                <div class="card-header">Shipment Readiness Dashboard</div>
+                
+                <div class="filter-bar">
+                    <input type="text" class="filter-input" placeholder="Search by shipment ID or exporter...">
+                    <select class="form-select" style="flex: none; width: 200px;">
+                        <option>All Status</option>
+                        <option>Ready</option>
+                        <option>Pending</option>
+                        <option>Exception</option>
+                        <option>Incomplete</option>
+                    </select>
+                </div>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Shipment ID</th>
+                            <th>Exporter</th>
+                            <th>Destination</th>
+                            <th>Readiness Score</th>
+                            <th>Status</th>
+                            <th>Expected Ship Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>SH-2024-0892</td>
+                            <td>Maple Export Corp</td>
+                            <td>United States</td>
+                            <td>
+                                <div class="progress-bar" style="width: 100px;">
+                                    <div class="progress-fill" style="width: 100%"></div>
+                                </div>
+                                100%
+                            </td>
+                            <td><span class="status-badge status-ready">Ready</span></td>
+                            <td>2024-03-08</td>
+                            <td><button class="btn btn-secondary">View Details</button></td>
+                        </tr>
+                        <tr>
+                            <td>SH-2024-0891</td>
+                            <td>Northern Trade Ltd</td>
+                            <td>European Union</td>
+                            <td>
+                                <div class="progress-bar" style="width: 100px;">
+                                    <div class="progress-fill" style="width: 85%"></div>
+                                </div>
+                                85%
+                            </td>
+                            <td><span class="status-badge status-pending">Pending</span></td>
+                            <td>2024-03-10</td>
+                            <td><button class="btn btn-secondary">View Details</button></td>
+                        </tr>
+                        <tr>
+                            <td>SH-2024-0890</td>
+                            <td>Pacific Exports Inc</td>
+                            <td>Japan</td>
+                            <td>
+                                <div class="progress-bar" style="width: 100px;">
+                                    <div class="progress-fill" style="width: 72%; background-color: var(--warning-orange);"></div>
+                                </div>
+                                72%
+                            </td>
+                            <td><span class="status-badge status-exception">Exception</span></td>
+                            <td>2024-03-09</td>
+                            <td><button class="btn btn-danger">Review</button></td>
+                        </tr>
+                        <tr>
+                            <td>SH-2024-0889</td>
+                            <td>Atlantic Trading Co</td>
+                            <td>United Kingdom</td>
+                            <td>
+                                <div class="progress-bar" style="width: 100px;">
+                                    <div class="progress-fill" style="width: 100%"></div>
+                                </div>
+                                100%
+                            </td>
+                            <td><span class="status-badge status-ready">Ready</span></td>
+                            <td>2024-03-07</td>
+                            <td><button class="btn btn-secondary">View Details</button></td>
+                        </tr>
+                        <tr>
+                            <td>SH-2024-0888</td>
+                            <td>Great Lakes Commodities</td>
+                            <td>Mexico</td>
+                            <td>
+                                <div class="progress-bar" style="width: 100px;">
+                                    <div class="progress-fill" style="width: 45%; background-color: var(--text-secondary);"></div>
+                                </div>
+                                45%
+                            </td>
+                            <td><span class="status-badge status-incomplete">Incomplete</span></td>
+                            <td>2024-03-12</td>
+                            <td><button class="btn btn-secondary">View Details</button></td>
+                        </tr>
+                        <tr>
+                            <td>SH-2024-0887</td>
+                            <td>Tech Solutions Canada</td>
+                            <td>China</td>
+                            <td>
+                                <div class="progress-bar" style="width: 100px;">
+                                    <div class="progress-fill" style="width: 68%; background-color: var(--warning-orange);"></div>
+                                </div>
+                                68%
+                            </td>
+                            <td><span class="status-badge status-exception">Exception</span></td>
+                            <td>2024-03-11</td>
+                            <td><button class="btn btn-danger">Review</button></td>
+                        </tr>
+                        <tr>
+                            <td>SH-2024-0886</td>
+                            <td>Western Grain Exports</td>
+                            <td>Japan</td>
+                            <td>
+                                <div class="progress-bar" style="width: 100px;">
+                                    <div class="progress-fill" style="width: 100%"></div>
+                                </div>
+                                100%
+                            </td>
+                            <td><span class="status-badge status-ready">Ready</span></td>
+                            <td>2024-03-08</td>
+                            <td><button class="btn btn-secondary">View Details</button></td>
+                        </tr>
+                        <tr>
+                            <td>SH-2024-0885</td>
+                            <td>Maritime Seafood Exports</td>
+                            <td>United States</td>
+                            <td>
+                                <div class="progress-bar" style="width: 100px;">
+                                    <div class="progress-fill" style="width: 58%; background-color: var(--primary-red);"></div>
+                                </div>
+                                58%
+                            </td>
+                            <td><span class="status-badge status-exception">Exception</span></td>
+                            <td>2024-03-07</td>
+                            <td><button class="btn btn-danger">Urgent</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Corridor Readiness Metrics (Pilot Targets)</div>
+                <div class="alert alert-info">
+                    These metrics represent pilot targets for measuring the impact of digital infrastructure on trade flow efficiency.
+                </div>
+
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-label">Documentation Prep Time Reduction Target</div>
+                        <div class="stat-value">-35%</div>
+                        <div style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.5rem;">
+                            Baseline: 4.2 hours per shipment
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Documentation Error Reduction Target</div>
+                        <div class="stat-value">-45%</div>
+                        <div style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.5rem;">
+                            Baseline: 12% error rate
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Pre-Validated Status Achievement Target</div>
+                        <div class="stat-value">80%</div>
+                        <div style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.5rem;">
+                            Current: 93% of submitted shipments
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-label">Manual Re-Keying Reduction Target</div>
+                        <div class="stat-value">-60%</div>
+                        <div style="font-size: 0.875rem; color: var(--text-secondary); margin-top: 0.5rem;">
+                            Single-entry data capture model
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header">Standards & Interoperability Framework</div>
+                <div class="data-grid">
+                    <div class="data-field">
+                        <div class="data-field-label">Digital Trade Records</div>
+                        <div class="data-field-value">MLETR-Aligned</div>
+                    </div>
+                    <div class="data-field">
+                        <div class="data-field-label">Data Structure</div>
+                        <div class="data-field-value">UN/CEFACT Standards</div>
+                    </div>
+                    <div class="data-field">
+                        <div class="data-field-label">Customs Data Model</div>
+                        <div class="data-field-value">WCO Data Model 3.9</div>
+                    </div>
+                    <div class="data-field">
+                        <div class="data-field-label">Security & Governance</div>
+                        <div class="data-field-value">CAN/DGSI 104</div>
+                    </div>
+                </div>
+                <div style="margin-top: 1rem; padding: 1rem; background-color: var(--bg-gray); border-radius: 4px; font-size: 0.875rem;">
+                    <strong>Interoperability Approach:</strong> Records structured to international standards enable seamless data exchange with other jurisdictions and corridor systems without proprietary lock-in.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showScreen(screenId) {
+            // Hide all screens
+            document.querySelectorAll('.screen').forEach(screen => {
+                screen.classList.remove('active');
+            });
+            
+            // Remove active class from all tabs
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            // Show selected screen
+            document.getElementById(screenId).classList.add('active');
+            
+            // Add active class to clicked tab
+            event.target.classList.add('active');
+        }
+
+        function toggleLanguage() {
+            alert('Bilingual EN/FR mode toggle would be implemented here. Interface would switch between English and French.');
+        }
+
+        function submitShipment(event) {
+            event.preventDefault();
+            alert('Shipment data submitted successfully.\n\nNext steps:\n1. Data structured to UN/CEFACT standards\n2. Compliance readiness validation initiated\n3. Document verification in progress\n\nShipment ID: SH-2024-0893 created');
+            event.target.reset();
+        }
+
+        function resetForm() {
+            document.getElementById('shipmentForm').reset();
+        }
+
+        function viewShipment(shipmentId) {
+            alert(`Viewing details for ${shipmentId}.\n\nThis would open a detailed view with:\n- Complete shipment data\n- Document repository\n- Compliance status\n- Audit trail\n- Export readiness score`);
+        }
+
+        function resolveException(shipmentId, action) {
+            alert(`Exception resolved for ${shipmentId}.\n\nAction: ${action}\nReviewer: j.smith@cbsa.gc.ca\nTimestamp: ${new Date().toLocaleString()}\n\nShipment moved to compliance validation queue.`);
+        }
+
+        function requestMoreInfo(shipmentId) {
+            alert(`Information request sent to exporter for ${shipmentId}.\n\nExporter will be notified via email with specific items requiring clarification.\n\nShipment remains in exception queue pending response.`);
+        }
+
+        function rejectException(shipmentId) {
+            const confirm = window.confirm(`Reject shipment ${shipmentId}?\n\nThis will:\n- Flag the record as rejected\n- Notify the exporter\n- Require data correction and resubmission\n\nProceed with rejection?`);
+            if (confirm) {
+                alert('Shipment rejected. Exporter notified with rejection reasons.');
+            }
+        }
+
+        function escalateToRegulator(shipmentId) {
+            alert(`${shipmentId} escalated to GAC Export Control Division.\n\nRegulatory review initiated.\nExport control officer will be assigned.\nExporter notified of regulatory review status.`);
+        }
+
+        function notifyExporter(shipmentId) {
+            alert(`Urgent notification sent to exporter for ${shipmentId}.\n\nSubject: Critical Document Required - Time Sensitive\n\nExporter will receive:\n- Email notification\n- SMS alert (if configured)\n- Portal notification\n\nDeadline: 24 hours before scheduled departure`);
+        }
+
+        function contactCFIA(shipmentId) {
+            alert(`CFIA contact initiated for ${shipmentId}.\n\nAction:\n- Request expedited health certificate review\n- Coordinate with CFIA inspection office\n- Notify exporter of CFIA requirements\n\nCase reference created in CFIA coordination system.`);
+        }
+
+        // Simulate real-time updates
+        setInterval(() => {
+            // This would connect to a real-time data stream in production
+            console.log('Checking for updates...');
+        }, 30000);
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('TPTN Corridor Readiness Console initialized');
+            console.log('Standards: MLETR, UN/CEFACT, WCO, CAN/DGSI 104');
+            console.log('Data residency: Canadian sovereign infrastructure');
+        });
+    </script>
+</body>
+</html>
