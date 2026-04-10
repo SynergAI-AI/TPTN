@@ -1,0 +1,1577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sovereign Digital Trade Infrastructure — CUSMA Architecture Brief</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,600;0,700;1,300&family=IBM+Plex+Serif:wght@400;600&display=swap');
+
+  :root {
+    --bg: #0a0e14;
+    --surface: #0f1520;
+    --surface2: #141c2d;
+    --border: #1e2d45;
+    --border2: #253650;
+    --accent: #3b82f6;
+    --accent2: #60a5fa;
+    --gold: #f59e0b;
+    --green: #10b981;
+    --red: #ef4444;
+    --orange: #f97316;
+    --teal: #06b6d4;
+    --text: #e2e8f0;
+    --text-muted: #7c93b0;
+    --text-dim: #4a6080;
+    --mono: 'IBM Plex Mono', monospace;
+    --sans: 'IBM Plex Sans', sans-serif;
+    --serif: 'IBM Plex Serif', serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* ── SIDEBAR ── */
+  #sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: 268px;
+    height: 100vh;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    overflow-y: auto;
+    z-index: 100;
+    padding: 0 0 40px;
+  }
+
+  #sidebar-header {
+    padding: 22px 18px 14px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 6px;
+  }
+
+  #sidebar-header .label {
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--teal);
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+
+  #sidebar-header h2 {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.45;
+  }
+
+  #sidebar-header .version-tag {
+    margin-top: 8px;
+    font-family: var(--mono);
+    font-size: 9px;
+    color: var(--gold);
+    letter-spacing: 1px;
+  }
+
+  #sidebar nav a {
+    display: block;
+    padding: 7px 18px 7px 18px;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--text-muted);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    transition: all 0.15s;
+    line-height: 1.4;
+  }
+
+  #sidebar nav a:hover, #sidebar nav a.active {
+    color: var(--accent2);
+    border-left-color: var(--accent);
+    background: rgba(59,130,246,0.06);
+    padding-left: 20px;
+  }
+
+  #sidebar nav .nav-section {
+    padding: 10px 18px 3px;
+    font-family: var(--mono);
+    font-size: 8.5px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--text-dim);
+  }
+
+  #sidebar nav .nav-new {
+    color: var(--teal);
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 1px;
+    margin-left: 4px;
+  }
+
+  /* ── MAIN ── */
+  #main {
+    margin-left: 268px;
+    padding: 0 56px 80px 56px;
+    max-width: 1100px;
+  }
+
+  /* ── HERO ── */
+  #hero {
+    padding: 52px 0 44px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 56px;
+  }
+
+  .classification-bar {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 3px;
+    color: var(--gold);
+    margin-bottom: 18px;
+    text-transform: uppercase;
+  }
+
+  #hero h1 {
+    font-family: var(--serif);
+    font-size: 30px;
+    font-weight: 600;
+    line-height: 1.25;
+    color: #f1f5f9;
+    margin-bottom: 14px;
+    max-width: 720px;
+  }
+
+  #hero .subtitle {
+    color: var(--text-muted);
+    font-size: 14px;
+    font-weight: 300;
+    max-width: 620px;
+    margin-bottom: 24px;
+    line-height: 1.65;
+  }
+
+  .meta-row {
+    display: flex;
+    gap: 28px;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--text-dim);
+    flex-wrap: wrap;
+  }
+
+  .meta-row span strong { color: var(--text-muted); font-weight: 600; }
+
+  /* ── DISCUSSION LINE ── */
+  .discussion-line {
+    margin-top: 18px;
+    font-family: var(--mono);
+    font-size: 10.5px;
+    color: var(--text-dim);
+    letter-spacing: 0.5px;
+  }
+
+  /* ── SECTIONS ── */
+  .section {
+    margin-bottom: 72px;
+    scroll-margin-top: 28px;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 28px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .section-num {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 1px;
+    min-width: 44px;
+  }
+
+  .section-num.new-sec { color: var(--teal); }
+
+  .section h2 {
+    font-family: var(--serif);
+    font-size: 21px;
+    font-weight: 600;
+    color: #f1f5f9;
+    line-height: 1.3;
+  }
+
+  .section h3 {
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent2);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 28px 0 10px;
+  }
+
+  .section h3.teal { color: var(--teal); }
+
+  .section h4 {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+    margin: 18px 0 7px;
+  }
+
+  p { margin-bottom: 14px; color: var(--text); }
+
+  strong { color: #f1f5f9; font-weight: 600; }
+
+  em { color: var(--gold); font-style: normal; font-weight: 300; }
+
+  ul, ol { margin: 0 0 14px 22px; color: var(--text); }
+  li { margin-bottom: 7px; line-height: 1.6; }
+
+  /* ── TPTN DESIGN NOTE ── */
+  .tptn-note {
+    margin: 18px 0;
+    padding: 14px 18px;
+    border-radius: 4px;
+    border-left: 3px solid var(--teal);
+    background: rgba(6,182,212,0.06);
+    font-size: 13.5px;
+    line-height: 1.65;
+    color: #a5f3fc;
+  }
+
+  .tptn-note strong { color: #67e8f9; }
+
+  /* ── CALLOUT BOXES ── */
+  .callout {
+    margin: 18px 0;
+    padding: 14px 18px;
+    border-radius: 4px;
+    border-left: 3px solid;
+    font-size: 13.5px;
+    line-height: 1.65;
+  }
+
+  .callout-blue { border-color: var(--accent); background: rgba(59,130,246,0.07); color: #93c5fd; }
+  .callout-green { border-color: var(--green); background: rgba(16,185,129,0.07); color: #6ee7b7; }
+  .callout-gold { border-color: var(--gold); background: rgba(245,158,11,0.07); color: #fcd34d; }
+  .callout-red { border-color: var(--red); background: rgba(239,68,68,0.07); color: #fca5a5; }
+  .callout-teal { border-color: var(--teal); background: rgba(6,182,212,0.07); color: #a5f3fc; }
+
+  /* ── ASCII DIAGRAMS ── */
+  .diagram-box {
+    margin: 24px 0;
+    border: 1px solid var(--border2);
+    border-radius: 6px;
+    overflow: hidden;
+  }
+
+  .diagram-label {
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+    padding: 8px 16px;
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: 2px;
+    color: var(--text-dim);
+    text-transform: uppercase;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .diagram-label .fig-num { color: var(--accent); }
+
+  pre.diagram {
+    background: #060a0f;
+    padding: 22px 22px;
+    font-family: var(--mono);
+    font-size: 11px;
+    line-height: 1.55;
+    color: #a8c4e0;
+    overflow-x: auto;
+    white-space: pre;
+  }
+
+  /* ── TABLES ── */
+  .table-wrap { overflow-x: auto; margin: 20px 0; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+
+  thead tr { background: var(--surface2); border-bottom: 2px solid var(--border2); }
+
+  thead th {
+    padding: 11px 13px;
+    text-align: left;
+    font-family: var(--mono);
+    font-size: 9.5px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--accent2);
+    font-weight: 600;
+  }
+
+  thead th.teal-th { color: var(--teal); }
+
+  tbody tr { border-bottom: 1px solid var(--border); transition: background 0.1s; }
+  tbody tr:hover { background: rgba(59,130,246,0.04); }
+
+  td {
+    padding: 11px 13px;
+    color: var(--text);
+    vertical-align: top;
+    line-height: 1.55;
+  }
+
+  td:first-child { font-family: var(--mono); font-size: 10.5px; color: var(--gold); }
+
+  .tag-can { background: rgba(16,185,129,0.14); color: #10b981; padding: 2px 7px; border-radius: 3px; font-family: var(--mono); font-size: 9.5px; white-space: nowrap; }
+  .tag-ext { background: rgba(249,115,22,0.14); color: #f97316; padding: 2px 7px; border-radius: 3px; font-family: var(--mono); font-size: 9.5px; white-space: nowrap; }
+  .tag-yes { background: rgba(16,185,129,0.11); color: #10b981; padding: 2px 7px; border-radius: 3px; font-family: var(--mono); font-size: 9.5px; }
+  .tag-no { background: rgba(239,68,68,0.11); color: #ef4444; padding: 2px 7px; border-radius: 3px; font-family: var(--mono); font-size: 9.5px; }
+  .tag-cond { background: rgba(245,158,11,0.11); color: #f59e0b; padding: 2px 7px; border-radius: 3px; font-family: var(--mono); font-size: 9.5px; }
+
+  /* ── PATTERN CARDS ── */
+  .card-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 18px 0; }
+
+  .pattern-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 16px;
+  }
+
+  .pattern-card.good { border-top: 2px solid var(--green); }
+  .pattern-card.bad { border-top: 2px solid var(--red); }
+
+  .pattern-card .card-label {
+    font-family: var(--mono);
+    font-size: 8.5px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 7px;
+  }
+
+  .pattern-card.good .card-label { color: var(--green); }
+  .pattern-card.bad .card-label { color: var(--red); }
+
+  .pattern-card h4 { font-size: 12.5px; font-weight: 600; color: var(--text); margin-bottom: 7px; }
+  .pattern-card p { font-size: 11.5px; color: var(--text-muted); margin: 0; line-height: 1.55; }
+
+  /* ── TPTN CONTROL TABLE ── */
+  .control-table th { color: var(--teal); font-size: 9px; }
+  .control-table td:first-child { color: var(--teal); font-size: 10px; }
+
+  /* ── WHAT-APPLIES SECTION ── */
+  .applies-block {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: 20px 22px;
+    margin: 16px 0;
+  }
+
+  .applies-block h4 { color: var(--teal); font-size: 13px; margin-bottom: 10px; }
+  .applies-block p, .applies-block li { font-size: 13px; color: var(--text-muted); }
+
+  /* ── TIMELINE ── */
+  .timeline { margin: 20px 0; border-left: 2px solid var(--border2); }
+
+  .timeline-step { display: flex; gap: 18px; margin-bottom: 0; }
+
+  .timeline-marker {
+    flex-shrink: 0;
+    width: 30px; height: 30px;
+    border-radius: 50%;
+    background: var(--surface2);
+    border: 1px solid var(--border2);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--mono); font-size: 10px; color: var(--accent);
+    margin-left: -16px; margin-top: 4px;
+  }
+
+  .timeline-content { padding-bottom: 24px; flex: 1; }
+  .timeline-content h4 { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 5px; }
+  .timeline-content p { font-size: 12.5px; color: var(--text-muted); margin: 0 0 5px; line-height: 1.6; }
+
+  .data-pill { display: inline-block; padding: 2px 7px; border-radius: 11px; font-family: var(--mono); font-size: 9.5px; margin: 2px 2px 2px 0; }
+  .dp-enc { background: rgba(168,85,247,0.14); color: #c084fc; border: 1px solid rgba(168,85,247,0.28); }
+  .dp-can { background: rgba(16,185,129,0.11); color: #10b981; border: 1px solid rgba(16,185,129,0.22); }
+  .dp-xborder { background: rgba(249,115,22,0.11); color: #fb923c; border: 1px solid rgba(249,115,22,0.22); }
+  .dp-audit { background: rgba(245,158,11,0.11); color: #fbbf24; border: 1px solid rgba(245,158,11,0.22); }
+
+  /* ── CHECKLIST ── */
+  .checklist { list-style: none; margin: 14px 0; }
+  .checklist li { display: flex; gap: 11px; padding: 9px 0; border-bottom: 1px solid var(--border); font-size: 13px; line-height: 1.55; }
+  .checklist li:last-child { border-bottom: none; }
+  .check-num { font-family: var(--mono); font-size: 10.5px; color: var(--accent); min-width: 26px; padding-top: 1px; }
+
+  /* ── GLOSSARY ── */
+  .glossary-entry { margin-bottom: 18px; padding-bottom: 18px; border-bottom: 1px solid var(--border); }
+  .glossary-entry:last-child { border-bottom: none; }
+  .glossary-term { font-family: var(--mono); font-size: 11.5px; font-weight: 600; color: var(--gold); margin-bottom: 5px; letter-spacing: 0.5px; }
+  .glossary-entry p { font-size: 13px; color: var(--text-muted); margin: 0; }
+
+  /* ── LAYER TABLE ── */
+  .layer-table { width: 100%; border-collapse: collapse; font-size: 12px; margin: 18px 0; }
+  .layer-table th { font-family: var(--mono); font-size: 9px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--accent2); padding: 9px 11px; text-align: left; background: var(--surface2); border-bottom: 2px solid var(--border2); }
+  .layer-table td { padding: 9px 11px; border-bottom: 1px solid var(--border); vertical-align: top; line-height: 1.5; }
+  .layer-table td:first-child { font-family: var(--mono); font-size: 9.5px; color: var(--accent); white-space: nowrap; }
+
+  /* ── SCROLLBAR ── */
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { background: var(--surface); }
+  ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 3px; }
+
+  /* ── CLOSING SECTIONS ── */
+  #closing { margin-top: 80px; padding-top: 48px; border-top: 2px solid var(--border2); }
+  #closing h2 { font-family: var(--serif); font-size: 20px; color: #f1f5f9; margin-bottom: 28px; }
+
+  footer {
+    margin-left: 268px;
+    padding: 20px 56px;
+    border-top: 1px solid var(--border);
+    font-family: var(--mono);
+    font-size: 9.5px;
+    color: var(--text-dim);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+
+  @media (max-width: 900px) {
+    #sidebar { display: none; }
+    #main { margin-left: 0; padding: 20px; }
+    footer { margin-left: 0; padding: 20px; }
+    .card-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ══════════════ SIDEBAR ══════════════ -->
+<div id="sidebar">
+  <div id="sidebar-header">
+    <div class="label">Architecture Brief</div>
+    <h2>Sovereign Digital Trade Infrastructure &amp; CUSMA Alignment</h2>
+    <div class="version-tag">Applied Design Case: TPTN</div>
+  </div>
+  <nav>
+    <div class="nav-section">Overview</div>
+    <a href="#hero">Introduction</a>
+
+    <div class="nav-section">Architecture</div>
+    <a href="#s1">§1 — Executive Explanation</a>
+    <a href="#s2">§2 — High-Level Diagram</a>
+    <a href="#s3">§3 — Technical Layers</a>
+
+    <div class="nav-section">Legal &amp; Policy</div>
+    <a href="#s4">§4 — CUSMA Risk Table</a>
+    <a href="#s5">§5 — Data Classification</a>
+
+    <div class="nav-section">Applied Case</div>
+    <a href="#s6">§6 — Export Scenario</a>
+    <a href="#s-tptn">§7 — How This Applies to TPTN</a>
+    <a href="#s-notmean">§8 — What This Does Not Mean</a>
+
+    <div class="nav-section">Controls &amp; Patterns</div>
+    <a href="#s-procurement">§9 — Procurement-Safe Controls</a>
+    <a href="#s7">§10 — Patterns &amp; Anti-Patterns</a>
+
+    <div class="nav-section">Closing</div>
+    <a href="#summary">Summary</a>
+    <a href="#checklist">10-Point Checklist</a>
+    <a href="#glossary">Glossary</a>
+  </nav>
+</div>
+
+<!-- ══════════════ MAIN ══════════════ -->
+<div id="main">
+
+  <!-- HERO -->
+  <div id="hero">
+    <div class="classification-bar">⬛ Architecture &amp; Policy Analysis — For Discussion Purposes ⬛</div>
+    <h1>Sovereign Digital Trade Infrastructure:<br>CUSMA Alignment, Cloud Architecture &amp; the TPTN Design Case</h1>
+    <p class="subtitle">An infrastructure design and policy analysis addressing cloud sovereignty, CUSMA trade-law risk, data classification, and applied architecture — using TPTN as the illustrative Canadian digital trade infrastructure model. TPTN is referenced here as a Canadian design-stage digital trade infrastructure model.</p>
+    <div class="meta-row">
+      <span><strong>Audience:</strong> Government, regulatory, policy &amp; advisory stakeholders</span>
+      <span><strong>Posture:</strong> Compatibility-first, standards-based</span>
+      <span><strong>Applied case:</strong> TPTN (design stage)</span>
+    </div>
+    <div class="discussion-line">Prepared from an infrastructure design and policy implementation perspective for discussion purposes.</div>
+  </div>
+
+  <!-- ══════════════ SECTION 1 ══════════════ -->
+  <div class="section" id="s1">
+    <div class="section-header">
+      <span class="section-num">§ 01</span>
+      <h2>Executive Explanation in Plain English</h2>
+    </div>
+
+    <h3>The Core Tension</h3>
+    <p>Canada wants to build digital trade infrastructure that it controls — where sensitive trade records, encryption keys, audit logs, and governance decisions remain in Canadian hands. At the same time, Canada has signed CUSMA, Chapter 19 of which creates meaningful constraints on how governments can treat cross-border digital services and data flows.</p>
+    <p>The tension is not abstract. It arises whenever a Canadian government agency or quasi-public infrastructure operator must choose a cloud provider, decide where to store data, or impose a technical requirement on its vendors.</p>
+
+    <div class="tptn-note">
+      <strong>In the TPTN design approach,</strong> this tension is addressed not by avoiding foreign cloud providers, but by defining precisely which layers and data classes must remain under Canadian operational control — and building architecture around that boundary.
+    </div>
+
+    <h3>What the U.S. Side Is Worried About</h3>
+    <p>The United States — whose major cloud providers (AWS, Microsoft Azure, Google Cloud) stand to lose revenue if Canada routes around them — is concerned that "sovereignty" requirements become a disguised form of market protectionism. From a U.S. trade-law perspective, the risk is:</p>
+    <ul>
+      <li>Canada mandating that data be stored only with Canadian-headquartered companies</li>
+      <li>Canada prohibiting procurement of U.S. cloud services without technical justification</li>
+      <li>Canada imposing requirements so burdensome they effectively exclude U.S. providers from the market</li>
+      <li>Canada claiming "security" as a justification for what is, in substance, industrial policy favouring Canadian vendors</li>
+    </ul>
+    <p>CUSMA Article 19.11 restricts data localization mandates that go beyond what is necessary for legitimate public policy objectives. Article 19.12 protects the free flow of cross-border data transfers. These are real constraints. Architectural decisions must be made with awareness of them.</p>
+
+    <h3>What Canada Is Trying to Protect</h3>
+    <p>Canada's concern is equally legitimate. The problem is not preference for domestic vendors — it is structural:</p>
+    <p><strong>Foreign legal reach:</strong> Data stored in U.S.-provider infrastructure — even in a Canadian data centre — may be subject to compelled disclosure under instruments such as the U.S. CLOUD Act, which extends reach to data controlled by U.S. providers regardless of physical location. The specific application of this risk to any given architecture configuration is a legal question that warrants qualified counsel review; the architectural response is to ensure that no foreign provider controls the decryption capability.</p>
+    <p><strong>Key control:</strong> If a U.S. provider manages encryption keys, that provider — and potentially its government — may have a path to the underlying data. "Data in Canada" is a weaker protection than it appears if the provider controls the decryption capability.</p>
+    <p><strong>Operational sovereignty:</strong> If a critical trade infrastructure platform can be modified, throttled, or shut down by a foreign provider's decision or a foreign government order, Canada does not genuinely control its own trade infrastructure.</p>
+    <p><strong>Audit integrity:</strong> If audit logs live inside the same foreign-controlled environment as transactions, those logs cannot function as genuinely independent evidentiary records.</p>
+
+    <h3>Why the Answer Is Not "Ban U.S. Providers"</h3>
+    <div class="callout callout-gold">
+      The distinction that matters throughout this document: <strong>the difference between restricting foreign providers by nationality</strong> — which is likely to create higher CUSMA challenge risk — <strong>and imposing neutral, objective control requirements that any provider must meet</strong> — which is a more defensible, procurement-safe, and standards-based approach. This distinction is the foundation of the design posture described here.
+    </div>
+    <p>A blanket ban on U.S. cloud providers would likely create significant CUSMA challenge risk and would also be operationally counterproductive — these providers offer real capabilities that Canadian SMEs and infrastructure operators legitimately need.</p>
+    <p>The correct architecture does something more precise: it <strong>separates what a provider can host from what a provider can see or control</strong>. A Canadian operator can use AWS infrastructure to run application workloads — provided AWS never has access to plaintext sensitive data, never controls encryption keys, and never sits in the chain of custody for regulated trade records or cryptographic material.</p>
+    <p>This is not a workaround. It is architecturally sound, legally defensible in posture, and operationally coherent: <em>any provider that satisfies Canada's neutral, objective security and control requirements may participate. No provider is excluded by nationality. But the requirements themselves are non-negotiable.</em></p>
+
+    <div class="tptn-note">
+      <strong>TPTN's design posture is compatibility-first.</strong> The architecture is designed to be interoperable with major cloud infrastructure and global trade systems — not to wall them off. The sovereignty position is defined by what TPTN controls, not by who TPTN excludes.
+    </div>
+  </div>
+
+  <!-- ══════════════ SECTION 2 ══════════════ -->
+  <div class="section" id="s2">
+    <div class="section-header">
+      <span class="section-num">§ 02</span>
+      <h2>High-Level Architecture Diagram</h2>
+    </div>
+
+    <p>The diagram below shows the full system at a strategic level. Green zones represent Canadian-sovereign elements. Orange represents external provider infrastructure. Blue represents cross-border data flows and gateways. Purple represents encryption and key management controls.</p>
+
+    <div class="diagram-box">
+      <div class="diagram-label">
+        <span>Figure 1 — Strategic Architecture Overview (TPTN Design Model)</span>
+        <span class="fig-num">FIG-01</span>
+      </div>
+<pre class="diagram">
+╔═══════════════════════════════════════════════════════════════════════════════════════╗
+║                          CANADA SOVEREIGN BOUNDARY                                    ║
+║  ┌──────────────────────────────────────────────────────────────────────────────────┐ ║
+║  │                     CANADIAN SME EXPORTER LAYER                                  │ ║
+║  │  [Agri-food]  [Manufacturing]  [Tech/Services]  [Forestry]  [Aerospace]         │ ║
+║  │        │              │               │               │           │              │ ║
+║  └────────┴──────────────┴───────────────┴───────────────┴───────────┘              ║
+║                                    │                                                  ║
+║              ──────────────────────▼──────────────────────                           ║
+║  ┌──────────────────────────────────────────────────────────────────────────────────┐ ║
+║  │           TPTN APPLICATION / WORKFLOW LAYER              [CA-RESIDENT]           │ ║
+║  │  • Trade document creation     • FTA usability engine                            │ ║
+║  │  • eCMR / eB/L workflow        • Compliance pre-check                            │ ║
+║  │  • Permit & license mgmt       • Multi-party workflow orchestration              │ ║
+║  └──────────────────────────────────────────────────────────────────────────────────┘ ║
+║                        │                      │                                        ║
+║          ──────────────▼──────────   ──────────▼──────────────────────────           ║
+║  ┌──────────────────────────────┐  ┌──────────────────────────────────────────────┐ ║
+║  │  AI / ORCHESTRATION LAYER    │  │    TRUST / AUDIT / RECORD LAYER [CA-ONLY]    │ ║
+║  │  [CA-resident compute]       │  │                                              │ ║
+║  │  • Anomaly detection         │  │  ┌────────────────────────────────────────┐  │ ║
+║  │  • Document classification   │  │  │  PORTABLE TRUST RECORD (PTR) STORE     │  │ ║
+║  │  • Routing intelligence      │  │  │  • Electronic Transferable Records     │  │ ║
+║  │  • Human review / override   │  │  │  • Audit-ready evidentiary anchors     │  │ ║
+║  │  (governed operational       │  │  │  • Immutable audit log stream          │  │ ║
+║  │   support, not chatbot)      │  │  │  • Chain-of-custody records            │  │ ║
+║  └──────────────────────────────┘  │  └────────────────────────────────────────┘  │ ║
+║                                     └──────────────────────────────────────────────┘ ║
+║                                                   │                                   ║
+║          ┌────────────────────────────────────────▼──────────────────────────────┐  ║
+║          │       CANADIAN KEY MANAGEMENT / HSM CONTROL LAYER [CA-ONLY]           │  ║
+║          │                                                                        │  ║
+║          │  ┌──────────────┐   ┌─────────────┐   ┌────────────────────────┐     │  ║
+║          │  │ HSM CLUSTER  │   │  KEY VAULT  │   │  POLICY ENGINE / RBAC  │     │  ║
+║          │  │ (CA-resident)│   │  (Canada)   │   │  (who gets keys, when) │     │  ║
+║          │  └──────────────┘   └─────────────┘   └────────────────────────┘     │  ║
+║          │                                                                        │  ║
+║          │  ══ CANADIAN OPERATORS HOLD ALL ROOT KEYS ═══════════════════════════ │  ║
+║          │  ══ FOREIGN PROVIDERS: ZERO ACCESS TO KEY MATERIAL ════════════════   │  ║
+║          └────────────────────────────────────────────────────────────────────────┘  ║
+║                                                                                       ║
+║          ┌────────────────────────────────────────────────────────────────────────┐  ║
+║          │        POLICY / GOVERNANCE / COMPLIANCE CONTROLS [CA-ONLY]             │  ║
+║          │  • Data classification engine    • Access control policy store         │  ║
+║          │  • PIPEDA / CPPA alignment       • Breach detection & response         │  ║
+║          │  • FTA rules of origin engine    • Regulatory reporting interface      │  ║
+║          └────────────────────────────────────────────────────────────────────────┘  ║
+╚═══════════════════════════════════════════════════════════════════════════════════════╝
+                               │                           │
+               ════════════════▼════════════════  ═════════▼══════════════════
+               ║  CROSS-BORDER DATA EXCHANGE    ║  ║  EXTERNAL CLOUD INFRA  ║
+               ║       GATEWAY LAYER            ║  ║    PROVIDER LAYER      ║
+               ╠════════════════════════════════╣  ╠════════════════════════╣
+               ║  • Selective disclosure         ║  ║  AWS / Azure / GCP      ║
+               ║  • Minimum necessary data      ║  ║                         ║
+               ║  • Encrypted transit only      ║  ║  CAN HOST:              ║
+               ║  • Protocol normalization      ║  ║  ✓ Encrypted app compute║
+               ║  • Per-transmission audit log  ║  ║  ✓ Non-sensitive traffic║
+               ╚════════════════════════════════╝  ║  ✓ UI/UX delivery       ║
+                          │          │              ║  ✓ Encrypted blob store  ║
+          ─────────────────┴──   ─────┴──────       ║                         ║
+          │                         │               ║  CANNOT ACCESS:         ║
+  ────────▼──────────  ─────────────▼──────────     ║  ✗ Encryption keys      ║
+  │ FOREIGN GOV /   │  │ BANKS / LOGISTICS /   │    ║  ✗ Audit log plaintext  ║
+  │ CUSTOMS /       │  │ BROKERS / INSURERS /  │    ║  ✗ PTR records          ║
+  │ SINGLE WINDOW   │  │ ASEAN COUNTERPARTIES  │    ║  ✗ Trade intelligence   ║
+  └─────────────────┘  └───────────────────────┘    ║  ✗ Root cryptographic   ║
+                                                     ║    material            ║
+                                                     ╚════════════════════════╝
+  LEGEND:
+  ╔══╗ = Canadian Sovereign Zone (CA operator-controlled; no foreign provider plaintext access)
+  ╠══╣ = Cross-border gateway (CA-controlled; selective disclosure; all transmissions logged)
+  ║  ║ = External provider zone (can host encrypted workloads; cannot see sensitive data plaintext)
+  ──── = Data flow (always encrypted in transit)
+  ═══  = Trust boundary
+</pre>
+    </div>
+
+    <div class="callout callout-teal">
+      <strong>Applied to TPTN:</strong> In the TPTN design model, this diagram defines the trust boundary not as a national border, but as a cryptographic and operational boundary. The external cloud provider layer can host encrypted application workloads. It cannot access encryption keys, audit logs, portable trust records, or any data classified as Sensitive Trade Intelligence or above. The boundary is defined by control — not geography.
+    </div>
+  </div>
+
+  <!-- ══════════════ SECTION 3 ══════════════ -->
+  <div class="section" id="s3">
+    <div class="section-header">
+      <span class="section-num">§ 03</span>
+      <h2>Technical Layered Architecture</h2>
+    </div>
+
+    <div class="diagram-box">
+      <div class="diagram-label">
+        <span>Figure 2 — Layer-by-Layer Technical Architecture (TPTN Design Model)</span>
+        <span class="fig-num">FIG-02</span>
+      </div>
+<pre class="diagram">
+Layer 10 ┌──────────────────────────────────────────────────────────────────────┐
+MONITOR  │  MONITORING / AUDIT / COMPLIANCE LAYER                              │
+& AUDIT  │  • Real-time SIEM (Security Information & Event Management)         │
+[CA-ONLY]│  • Immutable audit log stream (append-only, CA-resident)            │
+         │  • Compliance policy evaluation engine                              │
+         │  • Breach detection, alerting, forensics                            │
+         │  Residency: CANADA ONLY  |  Foreign provider: NO plaintext access   │
+         └──────────────────────────────────────────────────────────────────────┘
+                │
+Layer 09 ┌──────────────────────────────────────────────────────────────────────┐
+INFRA    │  INFRASTRUCTURE LAYER                                                │
+         │  • Canadian-resident sovereign core (HSM, key mgmt, audit, PTR)    │
+         │  • External cloud provider compute (encrypted app workloads only)   │
+         │  • Network segmentation: sovereign VPC ↔ provider VPC (encrypted)  │
+         │  • Canada-resident control plane (even if data plane uses cloud)    │
+         │  Residency: SPLIT — sovereign core CA-only; app compute: external   │
+         │  Foreign provider: CAN host encrypted blobs; CANNOT see plaintext   │
+         └──────────────────────────────────────────────────────────────────────┘
+                │
+Layer 08 ┌──────────────────────────────────────────────────────────────────────┐
+ENCRYPT  │  ENCRYPTION & KEY MANAGEMENT LAYER  [CROWN JEWEL — CA-ONLY]         │
+& KMS    │                                                                      │
+         │  ┌────────────────────────────────────────────────────────────────┐ │
+         │  │  HSM Cluster (FIPS 140-2 Level 3 minimum)                      │ │
+         │  │  • Root CA / root key material — never leaves HSM              │ │
+         │  │  • Key derivation for per-record, per-document encryption       │ │
+         │  │  • Customer-managed keys (CMK) — CA operator controls          │ │
+         │  └────────────────────────────────────────────────────────────────┘ │
+         │  ┌────────────────────────────────────────────────────────────────┐ │
+         │  │  Key Vault (CA-resident)                                        │ │
+         │  │  • Wrapping keys for application-layer encryption               │ │
+         │  │  • Envelope encryption architecture                             │ │
+         │  │  • Audit log: every key access event recorded                   │ │
+         │  └────────────────────────────────────────────────────────────────┘ │
+         │  Residency: CANADA ONLY  |  Foreign provider: ZERO key access       │
+         └──────────────────────────────────────────────────────────────────────┘
+                │ encrypts all sensitive data before any external storage
+Layer 07 ┌──────────────────────────────────────────────────────────────────────┐
+DATA     │  DATA CLASSIFICATION LAYER                                           │
+CLASS    │  • Classifies data as it enters the system                          │
+         │  • Routes Class 5–8 data to sovereign core only                    │
+         │  • Routes Class 1–3 data to allow (encrypted) external hosting     │
+         │  • Applies data handling policy per classification tag              │
+         │  Residency: CA-resident policy engine; tags travel with data        │
+         └──────────────────────────────────────────────────────────────────────┘
+                │
+Layer 06 ┌──────────────────────────────────────────────────────────────────────┐
+API /    │  INTEGRATION / API GATEWAY LAYER                                    │
+GATEWAY  │  • Cross-border data exchange gateway (CA-controlled)               │
+         │  • Protocol normalization (UN/CEFACT, WCO Data Model, ASEAN DEFA)  │
+         │  • Selective disclosure: minimum necessary data per request         │
+         │  • mTLS / token-based authentication for all external connections   │
+         │  • Per-transmission audit log (timestamp, recipient, data scope)    │
+         │  Residency: CA-resident gateway; transit: encrypted only            │
+         └──────────────────────────────────────────────────────────────────────┘
+                │ ←────────────────────────────────────── │
+                ▼                                          ▼
+   [Foreign Gov / Customs]                     [Banks / Logistics / Brokers]
+   [ASEAN Single Window]                       [Insurance / Trade Finance]
+Layer 05 ┌──────────────────────────────────────────────────────────────────────┐
+RECORDS  │  RECORDS / TRUST LAYER  [CA-ONLY]                                   │
+& TRUST  │                                                                      │
+         │  ┌───────────────────────────────────────────────────────────────┐  │
+         │  │  Portable Trust Record (PTR) Store                             │  │
+         │  │  • Electronic Transferable Records (per UNCITRAL MLETR)       │  │
+         │  │  • eB/L, eCMR, electronic warehouse receipts                  │  │
+         │  │  • Cryptographic hash anchors (integrity verification)        │  │
+         │  │  • Chain-of-custody events (who, when, what action)           │  │
+         │  └───────────────────────────────────────────────────────────────┘  │
+         │  ┌───────────────────────────────────────────────────────────────┐  │
+         │  │  Immutable Audit Log (append-only; CA-resident)                │  │
+         │  │  • Every system action → log entry                             │  │
+         │  │  • Log entries: cryptographically signed and chained           │  │
+         │  │  • Log store: independent of application environment           │  │
+         │  └───────────────────────────────────────────────────────────────┘  │
+         │  Residency: CANADA ONLY  |  Foreign provider: NO plaintext access   │
+         └──────────────────────────────────────────────────────────────────────┘
+Layer 04 ┌──────────────────────────────────────────────────────────────────────┐
+AI LAYER │  AI ASSISTANCE LAYER  [CA-resident compute; governed operation]     │
+         │  • Document analysis & classification (not generative front-end)   │
+         │  • Rules-of-origin eligibility flagging                            │
+         │  • Anomaly / fraud detection in trade data streams                 │
+         │  • All AI decisions: logged, human-reviewable, overridable         │
+         │  Residency: CA-resident compute preferred; external cloud only if  │
+         │  input data is pre-classified and confirmed non-sensitive           │
+         └──────────────────────────────────────────────────────────────────────┘
+Layer 03 ┌──────────────────────────────────────────────────────────────────────┐
+WORKFLOW │  WORKFLOW / ORCHESTRATION LAYER                                      │
+         │  • Multi-party trade workflow state machine                        │
+         │  • FTA eligibility & compliance pre-check                          │
+         │  • Permit, license, certificate of origin lifecycle                │
+         │  Residency: CA-resident; external cloud may host if encrypted      │
+         └──────────────────────────────────────────────────────────────────────┘
+Layer 02 ┌──────────────────────────────────────────────────────────────────────┐
+APP SVC  │  APPLICATION SERVICES LAYER                                          │
+         │  • Exporter onboarding, identity verification                      │
+         │  • Document management, template engine                            │
+         │  • Notification services, partner communication                    │
+         │  Residency: External cloud can host (encrypted; CMK applied)       │
+         └──────────────────────────────────────────────────────────────────────┘
+Layer 01 ┌──────────────────────────────────────────────────────────────────────┐
+USER /   │  USER / CHANNEL LAYER                                                │
+CHANNEL  │  • Web portal (Canadian SME exporters)                              │
+         │  • API channel (freight forwarders, customs brokers)               │
+         │  • Government portal interfaces                                     │
+         │  Residency: Delivery via external CDN acceptable; auth CA-only     │
+         └──────────────────────────────────────────────────────────────────────┘
+
+  KEY:  [CA-ONLY] = Must reside in CA-controlled environment; no foreign provider plaintext access
+        [SPLIT]   = Control plane CA-only; compute may use external cloud with encryption + CMK
+        [EXT OK]  = Can be hosted by external provider if encrypted with CA-controlled keys
+</pre>
+    </div>
+
+    <div class="table-wrap">
+      <table class="layer-table">
+        <thead>
+          <tr>
+            <th>Layer</th>
+            <th>Purpose</th>
+            <th>Residency</th>
+            <th>Foreign Cloud Can Host?</th>
+            <th>Provider Plaintext Access?</th>
+            <th>Must Be CA-Controlled?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>L10 — Monitor/Audit</td>
+            <td>Compliance, evidentiary integrity</td>
+            <td>Canada only</td>
+            <td><span class="tag-no">NO</span></td>
+            <td><span class="tag-no">NEVER</span></td>
+            <td><span class="tag-yes">YES</span></td>
+          </tr>
+          <tr>
+            <td>L09 — Infrastructure</td>
+            <td>Compute, storage, network</td>
+            <td>Split (sovereign core + ext cloud)</td>
+            <td><span class="tag-cond">PARTIAL</span></td>
+            <td><span class="tag-no">NO (encrypted only)</span></td>
+            <td><span class="tag-cond">CONTROL PLANE YES</span></td>
+          </tr>
+          <tr>
+            <td>L08 — Encryption/KMS</td>
+            <td>Key custody, HSM</td>
+            <td>Canada only</td>
+            <td><span class="tag-no">NO</span></td>
+            <td><span class="tag-no">NEVER</span></td>
+            <td><span class="tag-yes">YES — absolute</span></td>
+          </tr>
+          <tr>
+            <td>L07 — Data Classification</td>
+            <td>Tagging, routing policy</td>
+            <td>CA-resident engine</td>
+            <td><span class="tag-no">Policy engine: NO</span></td>
+            <td><span class="tag-no">NO</span></td>
+            <td><span class="tag-yes">YES</span></td>
+          </tr>
+          <tr>
+            <td>L06 — API/Gateway</td>
+            <td>Cross-border exchange, selective disclosure</td>
+            <td>Canada controlled</td>
+            <td><span class="tag-no">Gateway: NO</span></td>
+            <td><span class="tag-no">NO</span></td>
+            <td><span class="tag-yes">YES</span></td>
+          </tr>
+          <tr>
+            <td>L05 — Records/Trust</td>
+            <td>PTR, eTR, audit logs</td>
+            <td>Canada only</td>
+            <td><span class="tag-no">NO</span></td>
+            <td><span class="tag-no">NEVER</span></td>
+            <td><span class="tag-yes">YES — absolute</span></td>
+          </tr>
+          <tr>
+            <td>L04 — AI Layer</td>
+            <td>Analysis, anomaly detection</td>
+            <td>CA compute preferred</td>
+            <td><span class="tag-cond">Only with pre-classified non-sensitive data</span></td>
+            <td><span class="tag-cond">CONDITIONAL</span></td>
+            <td><span class="tag-cond">PREFERRED</span></td>
+          </tr>
+          <tr>
+            <td>L03 — Workflow</td>
+            <td>Trade workflow orchestration</td>
+            <td>CA resident</td>
+            <td><span class="tag-cond">With CMK + encryption</span></td>
+            <td><span class="tag-no">NO</span></td>
+            <td><span class="tag-yes">YES</span></td>
+          </tr>
+          <tr>
+            <td>L02 — App Services</td>
+            <td>Exporter-facing services</td>
+            <td>External cloud acceptable</td>
+            <td><span class="tag-yes">YES (with CMK)</span></td>
+            <td><span class="tag-no">NO (encrypted)</span></td>
+            <td><span class="tag-cond">PARTIAL</span></td>
+          </tr>
+          <tr>
+            <td>L01 — User/Channel</td>
+            <td>UI delivery, access</td>
+            <td>CDN/cloud acceptable</td>
+            <td><span class="tag-yes">YES (delivery only)</span></td>
+            <td><span class="tag-cond">Low-sens only</span></td>
+            <td><span class="tag-cond">Auth must be CA-controlled</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══════════════ SECTION 4 ══════════════ -->
+  <div class="section" id="s4">
+    <div class="section-header">
+      <span class="section-num">§ 04</span>
+      <h2>Legal Logic — CUSMA Risk Analysis Table</h2>
+    </div>
+
+    <div class="callout callout-blue">
+      <strong>Note on framing:</strong> The following table presents architecture and policy-risk analysis. Where a design approach is described as "more defensible" or "likely to present lower trade-law risk," this reflects architectural and procurement logic, not a legal opinion. CUSMA interpretation in specific cases requires qualified trade-law counsel. The table is intended to help infrastructure designers and policy advisors identify postures that are more or less likely to withstand scrutiny.
+    </div>
+
+    <p>CUSMA Chapter 19 prohibits data localization mandates that lack a legitimate public policy objective and go beyond what is necessary to achieve it. It does not prohibit security-based, neutral, objective technical requirements that any provider — domestic or foreign — must meet. The architecture described here is designed so that every control can be justified on security, evidentiary integrity, or operational sovereignty grounds — not on provider nationality.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Issue</th>
+            <th>What Creates Higher CUSMA Risk</th>
+            <th>More Procurement-Safe Approach</th>
+            <th>Why It Is More Defensible</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Hard Data Localization Mandates</td>
+            <td>Requiring all data stored only in Canada with no performance-based or security justification — likely a less defensible posture under Art. 19.11</td>
+            <td>Mandate localization only for specific high-sensitivity classes (keys, audit logs, PTRs) with documented security rationale tied to evidentiary integrity and foreign legal exposure risk</td>
+            <td>CUSMA Art. 19.11 allows localization for legitimate public policy objectives. Targeted, justified localization of specific data classes is a more defensible position than blanket mandates</td>
+          </tr>
+          <tr>
+            <td>Procurement Requirements</td>
+            <td>Writing RFPs that specify "Canadian provider only" or require headquarters in Canada — generally a less defensible posture; more likely to be challenged as nationality-based discrimination</td>
+            <td>Write requirements in terms of capabilities: HSM residency, key custody, audit independence, compliance with CAN/DGSI 104 — any qualified provider may bid</td>
+            <td>Neutral capability requirements are a more procurement-safe and standards-based approach. Nationality-based requirements are generally a weaker legal position and more susceptible to challenge</td>
+          </tr>
+          <tr>
+            <td>Encryption Key Control</td>
+            <td>Allowing the infrastructure provider to manage encryption keys — creates higher risk that a foreign legal compulsion order could yield plaintext data regardless of geographic location</td>
+            <td>Require customer-managed keys (CMK) with HSM custody in Canada; key derivation must occur in CA-resident HSM; provider never has key access. Major providers support this via external key manager architectures</td>
+            <td>A genuine security control, not a nationality restriction. Any provider — AWS, Azure, GCP — can in principle satisfy this requirement if they support external key managers. The control applies to all providers equally</td>
+          </tr>
+          <tr>
+            <td>Data Residency</td>
+            <td>Treating "data centre in Canada" as equivalent to sovereignty — an architectural misunderstanding that may also be a weaker legal position if challenged</td>
+            <td>Distinguish residency from control. Require Canadian-controlled key management AND Canadian-resident evidentiary records AND Canadian-controlled audit logs — not just a data centre address</td>
+            <td>The more legally coherent question is who has the operational capability to produce the data — not where it physically sits. This framing is more likely to withstand legal and procurement scrutiny</td>
+          </tr>
+          <tr>
+            <td>Foreign Provider Access</td>
+            <td>Allowing providers admin access to environments containing sensitive trade records or cryptographic material — creates compulsion risk and operational sovereignty risk simultaneously</td>
+            <td>Zero-trust segmentation; break-glass access only with CA-operator co-authorization; all provider access events audited; no provider has standing access to sensitive environments</td>
+            <td>Security-neutral requirement applicable to all providers equally. Eliminates a class of legal compulsion exposure without constituting nationality discrimination</td>
+          </tr>
+          <tr>
+            <td>Cross-Border Data Transfer</td>
+            <td>Blocking all cross-border data flows or requiring government approval for routine trade data exchanges — likely to create higher CUSMA risk under Art. 19.12 and could impede lawful trade operations</td>
+            <td>Allow cross-border transfer of operational, non-sensitive trade data; classify and gate only genuinely sensitive classes; use selective disclosure at the API gateway for higher classes</td>
+            <td>CUSMA Art. 19.12 protects free data flows. Blocking operational trade data (customs declarations, shipping notices) would likely present higher challenge risk. Gating only high-sensitivity data is proportionate and more defensible</td>
+          </tr>
+          <tr>
+            <td>Government-Only Sensitive Workloads</td>
+            <td>Claiming all workloads are "government sensitive" to justify blanket restrictions — over-classification weakens the legal argument by making it appear the classifications are pretextual</td>
+            <td>Apply strict, documented classification: only actual government-interface data gets the highest protection tier; private-sector commercial data gets proportionate protection</td>
+            <td>Precise, documented classification is both better security practice and a more legally defensible position. The tighter the classification rationale, the harder it is to challenge as protectionist</td>
+          </tr>
+          <tr>
+            <td>Audit Logging</td>
+            <td>Storing audit logs in the same environment as the provider who controls the data plane — creates evidentiary integrity risk and compounds compulsion exposure</td>
+            <td>Require audit logs in an environment the infrastructure provider cannot modify or access; CA-resident, append-only, cryptographically signed</td>
+            <td>Audit log independence is an evidentiary integrity requirement consistent with ISO 27001, SOC 2, and legal chain-of-custody standards — not a nationality restriction</td>
+          </tr>
+          <tr>
+            <td>Portable Electronic Trade Records</td>
+            <td>Locking electronic trade records inside one vendor's proprietary format or control plane — creates vendor dependency that undermines both legal standing and operational sovereignty</td>
+            <td>Implement PTRs per UNCITRAL MLETR using open, portable formats; store record control in CA-resident system; allow transfer without losing legal standing</td>
+            <td>Standards-based portability is legally neutral, interoperability-promoting, and consistent with WTO TFA objectives. Proprietary lock-in is both a security risk and a sovereignty failure mode</td>
+          </tr>
+          <tr>
+            <td>Vendor Lock-In</td>
+            <td>Building architecture that can only function with one provider's proprietary services — undermines portability, resilience, and the ability to enforce procurement requirements</td>
+            <td>Use open standards for encryption, APIs, and record formats; require portability as a procurement condition; maintain ability to migrate providers</td>
+            <td>Provider portability is a legitimate security and resilience requirement applicable to all providers. It also protects against abuse of market position by any single provider, regardless of nationality</td>
+          </tr>
+          <tr>
+            <td>Discriminatory Provider Exclusion</td>
+            <td>Stating "we will not use AWS because it is American" — likely to create higher CUSMA challenge risk and is architecturally unnecessary if control requirements are properly designed</td>
+            <td>State instead: "We will use any provider that meets our published technical requirements for key custody, audit independence, and data isolation. Those requirements are open to all."</td>
+            <td>This is the core CUSMA defence. If a provider can satisfy the requirements, it cannot credibly claim discrimination. If it cannot, the issue is with its product — not Canada's nationality bias</td>
+          </tr>
+          <tr>
+            <td>Standards-Based vs Nationality Requirements</td>
+            <td>Requiring certification from a body that foreign providers cannot realistically access — may be treated as a de facto nationality restriction even if not expressly so</td>
+            <td>Reference internationally recognized standards (ISO 27001, FIPS 140-2, UN/CEFACT, WCO Data Model, CAN/DGSI 104) — any provider may comply regardless of nationality</td>
+            <td>International standards are provider-neutral by design. Even specifically Canadian standards are a more defensible basis for requirements when they apply equally to all providers and are grounded in legitimate public policy</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══════════════ SECTION 5 ══════════════ -->
+  <div class="section" id="s5">
+    <div class="section-header">
+      <span class="section-num">§ 05</span>
+      <h2>Data Classification Model</h2>
+    </div>
+
+    <p>Every data element entering a sovereign digital trade platform must be classified at ingestion. Classification determines storage location, encryption requirements, cross-border transfer rules, and provider access permissions. In the TPTN design approach, the classification engine (Layer 07) is a Canadian-resident policy control — not a discretionary operational decision.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Class</th>
+            <th>Examples</th>
+            <th>Stays in Canada?</th>
+            <th>Can Transit Cross-Border?</th>
+            <th>Foreign Cloud Can Process?</th>
+            <th>Must Be Client-Side Encrypted?</th>
+            <th>Provider Can See Plaintext?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Class 1<br>Public / Low Sensitivity</td>
+            <td>Published tariff schedules, FTA text, public HS code lookups, general compliance guides</td>
+            <td><span class="tag-no">NOT REQUIRED</span></td>
+            <td><span class="tag-yes">YES — freely</span></td>
+            <td><span class="tag-yes">YES</span></td>
+            <td><span class="tag-no">NO</span></td>
+            <td><span class="tag-yes">YES — acceptable</span></td>
+          </tr>
+          <tr>
+            <td>Class 2<br>Operational Business Data</td>
+            <td>Shipment tracking events, non-sensitive logistics data, port of loading/discharge, vessel schedules</td>
+            <td><span class="tag-no">NOT REQUIRED</span></td>
+            <td><span class="tag-yes">YES — standard controls</span></td>
+            <td><span class="tag-yes">YES</span></td>
+            <td><span class="tag-no">NO — transit encryption sufficient</span></td>
+            <td><span class="tag-cond">LOW-RISK acceptable</span></td>
+          </tr>
+          <tr>
+            <td>Class 3<br>Regulated Commercial Data</td>
+            <td>Commercial invoices, packing lists, standard customs declarations, certificate of origin data, CFIA inspection results (non-sensitive)</td>
+            <td><span class="tag-cond">PREFERRED</span></td>
+            <td><span class="tag-yes">YES — to authorized recipients only</span></td>
+            <td><span class="tag-cond">YES — with CMK encryption</span></td>
+            <td><span class="tag-cond">APPLICATION-SIDE preferred</span></td>
+            <td><span class="tag-no">NO — encrypted storage required</span></td>
+          </tr>
+          <tr>
+            <td>Class 4<br>Sensitive Trade Intelligence</td>
+            <td>Buyer/supplier relationship data, pricing, trade route intelligence, competitive positioning, strategic shipment patterns</td>
+            <td><span class="tag-yes">YES</span></td>
+            <td><span class="tag-cond">RESTRICTED — minimum necessary only</span></td>
+            <td><span class="tag-no">NO — CA-resident compute only</span></td>
+            <td><span class="tag-yes">YES — before external storage</span></td>
+            <td><span class="tag-no">NEVER</span></td>
+          </tr>
+          <tr>
+            <td>Class 5<br>Electronic Transferable Records / Title-Sensitive</td>
+            <td>Electronic bills of lading (eB/L), electronic CMRs, electronic warehouse receipts, promissory notes, letters of credit in digital form</td>
+            <td><span class="tag-yes">YES — sovereign core only</span></td>
+            <td><span class="tag-cond">Only via selective disclosure (hash + verification, not full record)</span></td>
+            <td><span class="tag-no">NO</span></td>
+            <td><span class="tag-yes">YES — mandatory</span></td>
+            <td><span class="tag-no">NEVER</span></td>
+          </tr>
+          <tr>
+            <td>Class 6<br>Government-Shared / Regulated Interface Data</td>
+            <td>CBSA advance commercial information, controlled goods declarations, Export and Import Permits Act data, sanctions screening results</td>
+            <td><span class="tag-yes">YES — sovereign core + CA gov systems</span></td>
+            <td><span class="tag-cond">ONLY to authorized government recipients via encrypted channel</span></td>
+            <td><span class="tag-no">NO</span></td>
+            <td><span class="tag-yes">YES — mandatory</span></td>
+            <td><span class="tag-no">NEVER</span></td>
+          </tr>
+          <tr>
+            <td>Class 7<br>Cryptographic Material / Root Secrets</td>
+            <td>HSM root keys, master key encryption keys (MEKs), signing certificates, private key material, CA root certificates</td>
+            <td><span class="tag-yes">YES — HSM only, never leaves hardware</span></td>
+            <td><span class="tag-no">NEVER</span></td>
+            <td><span class="tag-no">NEVER</span></td>
+            <td>N/A — never stored externally</td>
+            <td><span class="tag-no">NEVER under any circumstances</span></td>
+          </tr>
+          <tr>
+            <td>Class 8<br>Audit / Evidentiary Records</td>
+            <td>System audit logs, access logs, chain-of-custody records, tamper evidence records, regulatory compliance trail</td>
+            <td><span class="tag-yes">YES — append-only, CA-resident</span></td>
+            <td><span class="tag-no">NOT as a live replication feed</span></td>
+            <td><span class="tag-no">NO — must be independent of app environment</span></td>
+            <td><span class="tag-yes">YES — cryptographically signed</span></td>
+            <td><span class="tag-no">NEVER</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout callout-gold">
+      <strong>Design note on Class 5 — Electronic Transferable Records:</strong> Under UNCITRAL MLETR, an electronic transferable record must maintain "exclusive control" — meaning the system architecture must guarantee that only one party at a time can exercise control over the record. In the TPTN design approach, this is a structural requirement for the PTR store: it cannot replicate, duplicate, or allow simultaneous control by multiple parties without explicit transfer actions. This is not optional for any platform aspiring to MLETR-aligned standing.
+    </div>
+  </div>
+
+  <!-- ══════════════ SECTION 6 ══════════════ -->
+  <div class="section" id="s6">
+    <div class="section-header">
+      <span class="section-num">§ 06</span>
+      <h2>Step-by-Step Worked Export Scenario</h2>
+    </div>
+
+    <p><strong>Scenario:</strong> A Canadian agri-food exporter (wheat, processed grains) sells to a buyer in ASEAN (Thailand). The shipment moves from Winnipeg → Vancouver → Bangkok. The platform is a TPTN-style digital trade infrastructure operator. This scenario illustrates the intended data flow under the TPTN design approach — not a completed operational transaction.</p>
+
+    <div class="timeline">
+      <div class="timeline-step">
+        <div class="timeline-marker">01</div>
+        <div class="timeline-content">
+          <h4>Exporter Onboarding &amp; Trade Document Creation</h4>
+          <p>The exporter logs in via the web portal (Layer 01 — delivered via CDN; authentication via CA-controlled identity provider). The exporter initiates an export transaction: buyer identity, commodity (HS code), quantity, destination.</p>
+          <p>Data classification at ingestion: commercial invoice data → <span class="data-pill dp-can">Class 3</span>. Buyer/supplier relationship → <span class="data-pill dp-can">Class 4</span>. Trade route intelligence → <span class="data-pill dp-can">Class 4</span>. All classified before routing.</p>
+          <p><em>What AWS/Azure can see: the session request (encrypted in transit). Nothing else.</em></p>
+        </div>
+      </div>
+      <div class="timeline-step">
+        <div class="timeline-marker">02</div>
+        <div class="timeline-content">
+          <h4>FTA Eligibility Pre-Check</h4>
+          <p>The AI layer (CA-resident compute) runs an automated CPTPP rules-of-origin eligibility check. Class 3–4 data is processed in CA-resident compute. The AI output is a <span class="data-pill dp-audit">logged decision</span> — timestamp, input hash, model version, result. The exporter sees the reasoning; a compliance officer can review and override.</p>
+          <p><em>What AWS/Azure can see: nothing. This computation is CA-resident.</em></p>
+        </div>
+      </div>
+      <div class="timeline-step">
+        <div class="timeline-marker">03</div>
+        <div class="timeline-content">
+          <h4>Trade Document Creation &amp; Encryption</h4>
+          <p>The workflow layer generates draft trade documents: commercial invoice, packing list, certificate of origin, and initiates an eB/L workflow. The CA-resident HSM derives a document-specific encryption key (DEK) for each document. Class 3 documents → encrypted with DEK, DEK wrapped with CMK. The eB/L (Class 5) → encrypted; stored in the PTR store — never leaves the sovereign core in plaintext.</p>
+          <p>Class 3 documents can now be stored in external cloud in encrypted form. The external cloud provider sees only ciphertext blobs.</p>
+          <p><span class="data-pill dp-enc">eB/L: Class 5 — PTR store only</span> <span class="data-pill dp-can">Invoice: Class 3 — encrypted cloud storage acceptable</span></p>
+        </div>
+      </div>
+      <div class="timeline-step">
+        <div class="timeline-marker">04</div>
+        <div class="timeline-content">
+          <h4>CBSA Advance Commercial Information (ACI) Filing</h4>
+          <p>The platform generates an ACI submission for CBSA (Class 6 data). It moves via the API gateway using a dedicated, encrypted government interface channel. The gateway enforces selective disclosure: only minimum data elements required by CBSA regulation are transmitted; surplus fields are stripped. The gateway logs the transmission: <span class="data-pill dp-audit">timestamp + recipient + data scope + hash</span>.</p>
+          <p>The eB/L is not transmitted — only a hash reference (for verification) is included. The original remains in the sovereign PTR store.</p>
+        </div>
+      </div>
+      <div class="timeline-step">
+        <div class="timeline-marker">05</div>
+        <div class="timeline-content">
+          <h4>Logistics Integration</h4>
+          <p>The freight forwarder receives booking reference, container number, vessel name (Class 2–3 data) through the API gateway. The carrier receives a hash reference to the eB/L — not the eB/L itself. The carrier can verify the eB/L exists and is valid via the platform's verification API, which returns cryptographic confirmation without exposing the document. Verifiable without visible.</p>
+          <p><span class="data-pill dp-xborder">Cross-border: booking ref, vessel data (Class 2)</span> <span class="data-pill dp-can">Stays CA: eB/L, pricing, supplier relationship (Class 4–5)</span></p>
+        </div>
+      </div>
+      <div class="timeline-step">
+        <div class="timeline-marker">06</div>
+        <div class="timeline-content">
+          <h4>Trade Finance — Bank Verification</h4>
+          <p>The Thai buyer's bank requests confirmation of the eB/L. The PTR store executes a controlled access event: the bank is authenticated; access is time-limited and scope-limited; the eB/L is decrypted only within the CA-resident trust layer; the viewing event is logged; the bank receives a secure, time-limited, scope-restricted view — not a copy of the document. Exclusive control remains with the exporter.</p>
+          <p><span class="data-pill dp-audit">Access event logged in audit trail</span></p>
+        </div>
+      </div>
+      <div class="timeline-step">
+        <div class="timeline-marker">07</div>
+        <div class="timeline-content">
+          <h4>ASEAN Single Window Filing — Thailand Customs</h4>
+          <p>The API gateway generates an outbound submission to Thailand's National Single Window, formatted per ASEAN DEFA standards. The submission contains only Class 2–3 data: commodity description, HS code, declared value, weight, CO reference (hash, not full CO). The selective disclosure engine strips all Class 4+ data before transmission.</p>
+          <p><span class="data-pill dp-xborder">Thailand NSW receives: HS code, declared value, CO hash (Class 2–3)</span><br><span class="data-pill dp-can">Stays in CA: buyer/supplier relationship, pricing intelligence, eB/L plaintext (Class 4–5)</span></p>
+        </div>
+      </div>
+      <div class="timeline-step">
+        <div class="timeline-marker">08</div>
+        <div class="timeline-content">
+          <h4>eB/L Formal Transfer — Title Passes to Buyer</h4>
+          <p>The exporter formally transfers exclusive control of the eB/L to the Thai buyer within the PTR store. The old holder signs the transfer instruction with their private key (CA-resident key vault); the PTR store validates the signature, updates the exclusive control record; the transfer event is recorded in the immutable audit log with cryptographic proof. The Thai buyer is now the exclusive controller. The eB/L document never moved in plaintext.</p>
+          <p><span class="data-pill dp-audit">Transfer event: immutable audit log with cryptographic proof</span></p>
+        </div>
+      </div>
+      <div class="timeline-step">
+        <div class="timeline-marker">09</div>
+        <div class="timeline-content">
+          <h4>Audit Trail Completeness</h4>
+          <p>At transaction close, the audit layer has a complete, cryptographically linked record: document creation, AI decision events, encryption/decryption events, government interface transmissions, third-party access events, chain-of-custody transfers. This audit trail is append-only, cryptographically chained, and stored in the CA-resident audit environment — to which no infrastructure provider has access. It constitutes an evidentiary-grade audit record suitable for regulatory review, dispute resolution, or legal proceedings.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════ SECTION 7 — TPTN APPLIED ══════════════ -->
+  <div class="section" id="s-tptn">
+    <div class="section-header">
+      <span class="section-num new-sec">§ 07</span>
+      <h2>How This Applies to TPTN</h2>
+    </div>
+
+    <p>The architecture described throughout this document is not abstract theory. It is the design posture that a Canadian digital trade infrastructure like TPTN must build toward in order to be credible with government and institutional stakeholders, viable in procurement contexts, and defensible on sovereignty grounds. This section maps the architecture directly to TPTN.</p>
+
+    <div class="callout callout-teal">
+      TPTN is not simply digitizing paperwork. It is intended to support trusted trade execution, auditability, interoperability, and — as it matures — electronic transferable record handling. Sovereignty for TPTN means not just where systems run, but who controls the trust architecture.
+    </div>
+
+    <div class="applies-block">
+      <h4>1. TPTN's Sovereign Core</h4>
+      <p>In the TPTN design approach, the sovereign core encompasses the elements that must remain under Canadian operational control regardless of what external cloud infrastructure is used:</p>
+      <ul>
+        <li><strong>Trusted Records:</strong> Electronic trade records — including any future electronic transferable records — are to be held in TPTN's PTR store, which is designed as a CA-resident, MLETR-aligned record custody system. No external provider holds the record or controls access to it.</li>
+        <li><strong>Audit Logs:</strong> All system audit logs are to be held in a CA-resident, append-only environment that is structurally independent of the application infrastructure provider. The logs are cryptographically signed and chained to preserve evidentiary integrity.</li>
+        <li><strong>Key Custody:</strong> TPTN's design intent is that all encryption keys for sensitive data classes are held in Canadian-resident HSMs. Foreign infrastructure providers have zero access to key material. This is the core mechanism that eliminates meaningful plaintext exposure to foreign legal compulsion.</li>
+        <li><strong>Policy and Access Governance:</strong> The decisions about who can access what, under what conditions, and with what logging — these governance decisions are made by TPTN's CA-resident policy engine. No external provider has the ability to modify access policy unilaterally.</li>
+        <li><strong>Regulated Trade and Government-Interface Data:</strong> Data exchanged with Canadian government systems (CBSA, AAFC, TC, CFIA) is handled within the sovereign core and transmitted through the CA-controlled API gateway under strict classification and selective disclosure controls.</li>
+      </ul>
+    </div>
+
+    <div class="applies-block">
+      <h4>2. What TPTN Can Allow in External Cloud Infrastructure</h4>
+      <p>Within a TPTN-style sovereign trade infrastructure model, the following can appropriately use external cloud infrastructure — subject to the encryption and key custody requirements described above:</p>
+      <ul>
+        <li><strong>Encrypted Application Workloads:</strong> Application compute (document management, workflow orchestration, notification services) may run in external cloud environments provided all sensitive data is encrypted client-side with CA-controlled keys before reaching the provider environment.</li>
+        <li><strong>User Interface Delivery:</strong> Web portal delivery via CDN or cloud infrastructure is acceptable, provided authentication and session management are controlled by CA-resident identity infrastructure.</li>
+        <li><strong>Selected Operational Services:</strong> Lower-sensitivity operational services (shipping data aggregation, notification routing, public data lookups) can be hosted in external cloud with appropriate encryption and access controls.</li>
+        <li><strong>Low-Sensitivity and Tokenized Processing:</strong> Class 1–2 data and tokenized representations of higher-sensitivity data (where the token-to-identity mapping resides only in the CA sovereign core) can be processed in external environments.</li>
+      </ul>
+    </div>
+
+    <div class="applies-block">
+      <h4>3. What TPTN Should Avoid</h4>
+      <p>The following represent design postures that TPTN should avoid — not because they are illegal, but because they undermine the sovereignty claims that make TPTN architecturally credible and government-relevant:</p>
+      <ul>
+        <li><strong>Plaintext storage of sensitive trade intelligence in foreign-controlled environments.</strong> Any Class 4+ data stored in plaintext in an external provider environment — regardless of geography — means the provider can be compelled to produce it. This collapses the sovereignty posture.</li>
+        <li><strong>Provider-managed keys for crown-jewel data.</strong> If AWS KMS, Azure Key Vault (in provider-managed mode), or Google Cloud KMS holds the keys to TPTN's most sensitive records, the encryption is operational theatre. The provider's legal exposure becomes TPTN's exposure.</li>
+        <li><strong>Commingling title-sensitive records with ordinary application data.</strong> Mixing Class 5 electronic trade records with Class 1–2 operational data in the same storage or compute environment creates unnecessary exposure surface and weakens the evidentiary independence of the record custody system.</li>
+        <li><strong>Broad cross-border replication by default.</strong> Replicating sensitive trade data to external environments as a default operational behaviour — rather than as a deliberate, classified, audited disclosure event — is incompatible with TPTN's intended sovereignty posture.</li>
+        <li><strong>Sovereignty claims based only on Canadian data-centre location.</strong> Asserting sovereignty because data is stored in an AWS Canada region, without CA-controlled key custody, CA-resident audit logs, and CA-controlled governance, is a claim that will not withstand serious government or regulatory scrutiny.</li>
+      </ul>
+    </div>
+
+    <div class="applies-block">
+      <h4>4. Why This Matters for TPTN Specifically</h4>
+      <p>TPTN's value proposition to government and institutional stakeholders rests on a set of claims: that it provides audit-ready, standards-aligned, interoperable electronic trade workflows; that it reduces export friction while maintaining evidentiary integrity; that it can be trusted to handle data that includes government-interface records and potentially electronic transferable records.</p>
+      <p>None of those claims are credible if the underlying trust architecture is not genuinely sovereign. A platform that routes sensitive trade intelligence through foreign-controlled environments in plaintext, or that uses provider-managed keys for regulated records, cannot credibly present itself as digital trade infrastructure with government-grade integrity. The architecture described in this document is what makes the value proposition defensible.</p>
+      <p>For TPTN, this means that the sovereignty architecture is not a feature — it is the foundation. Everything else — the SME interface, the FTA usability engine, the interoperability protocols, the AI-assisted compliance tooling — rests on the integrity of the trust and control layer. If that layer is not genuinely Canadian-controlled, the rest of the platform's claims are weakened.</p>
+    </div>
+  </div>
+
+  <!-- ══════════════ SECTION 8 — WHAT THIS DOES NOT MEAN ══════════════ -->
+  <div class="section" id="s-notmean">
+    <div class="section-header">
+      <span class="section-num new-sec">§ 08</span>
+      <h2>What This Does Not Mean</h2>
+    </div>
+
+    <p>The architecture described in this document is sometimes misread as a form of digital isolationism or anti-foreign-provider bias. To be precise about what this framework does and does not require:</p>
+
+    <div class="callout callout-blue">
+      This architecture is compatibility-first. It is designed to function with major global cloud infrastructure and to interoperate with global trade systems — not to exclude them.
+    </div>
+
+    <h3>This Architecture Does Not Require</h3>
+    <ul>
+      <li><strong>Banning U.S. or foreign providers by nationality.</strong> AWS, Microsoft Azure, and Google Cloud can participate in this architecture. The question is where and under what conditions. The requirements are capability-based and apply to all providers equally.</li>
+      <li><strong>Blocking lawful cross-border trade data exchange.</strong> The cross-border gateway is designed to enable interoperability with ASEAN Single Windows, foreign customs authorities, logistics partners, and trade finance institutions. The selective disclosure framework controls what is shared — it does not prohibit legitimate cross-border data flows.</li>
+      <li><strong>Keeping every trade data element in Canada.</strong> Class 1–2 data (public tariff schedules, non-sensitive logistics data, tracking information) can and does move across borders freely. Only genuinely sensitive classes (4–8) are subject to strict residency and access controls.</li>
+      <li><strong>Treating "Canadian region" as sovereign control.</strong> This document explicitly rejects that equivalence. A Canadian AWS region operated under AWS's standard terms does not constitute sovereign control. Sovereignty requires operational control, key custody, and audit independence — not a postal code.</li>
+      <li><strong>Eliminating the need for legal review, procurement discipline, or standards validation.</strong> The architecture described here is a design posture. Implementing it in a procurement, regulatory, or government context requires qualified legal counsel, standards validation processes, and the appropriate procurement frameworks. This document does not substitute for any of those processes.</li>
+    </ul>
+
+    <h3>The Correct Framing</h3>
+    <p>The architecture is a <strong>control posture</strong>, not an exclusion posture. It defines what must be Canadian-controlled — keys, audit logs, record custody, governance — and allows everything else to use the best available infrastructure, domestic or foreign, subject to meeting the control requirements.</p>
+    <p>Any government or institutional reader should understand this framework as: <em>Canada asserting what it controls, not declaring what it excludes.</em></p>
+  </div>
+
+  <!-- ══════════════ SECTION 9 — PROCUREMENT-SAFE CONTROLS ══════════════ -->
+  <div class="section" id="s-procurement">
+    <div class="section-header">
+      <span class="section-num new-sec">§ 09</span>
+      <h2>Procurement-Safe Sovereignty Controls</h2>
+    </div>
+
+    <p>The following table summarizes the key sovereignty controls in TPTN's design posture, framed explicitly as neutral, objective, standards-based requirements. A government reader should be able to confirm that none of these controls are nationality-based, and that each can be articulated in procurement language that any qualified provider — domestic or foreign — could in principle satisfy.</p>
+
+    <div class="table-wrap">
+      <table class="control-table">
+        <thead>
+          <tr>
+            <th class="teal-th">Control</th>
+            <th class="teal-th">TPTN Design Intent</th>
+            <th class="teal-th">Why It Is Neutral / Objective</th>
+            <th class="teal-th">Why It Matters</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Canada-Resident Key Custody</td>
+            <td>All encryption keys for Class 4–8 data held in CA-resident HSMs (FIPS 140-2 Level 3 minimum); foreign providers have zero key access</td>
+            <td>Defined by technical capability and hardware certification standards (FIPS 140-2), not provider nationality. AWS, Azure, or GCP can each support this via external key manager architectures if they choose to do so</td>
+            <td>Eliminates the primary mechanism by which a foreign legal compulsion order could yield plaintext access to sensitive trade data, regardless of data location. This is the most important single control in the architecture</td>
+          </tr>
+          <tr>
+            <td>Independent Audit Logging</td>
+            <td>Audit logs stored in a CA-resident, append-only environment structurally independent of the application infrastructure provider; cryptographically signed and chained</td>
+            <td>Defined by evidentiary integrity requirements (consistency with ISO 27001, SOC 2, legal chain-of-custody standards) — applicable to any provider. No provider of any nationality is inherently preferred</td>
+            <td>Audit logs that a provider can modify or withhold are not reliable evidentiary records. Independent logging is a prerequisite for TPTN's audit-ready positioning and for any regulatory or dispute-resolution context</td>
+          </tr>
+          <tr>
+            <td>Classification-Based Routing</td>
+            <td>Data classified at ingestion by a CA-resident policy engine; Class 4–8 data routed to sovereign core; Class 1–3 data may use external cloud subject to encryption requirements</td>
+            <td>A security and data governance control based on data sensitivity, not provider identity. The same classification framework applies regardless of which cloud provider is used for each layer</td>
+            <td>Prevents inadvertent exposure of sensitive data to external providers; enables a principled distinction between what is legitimately in external infrastructure and what is not — which is also the CUSMA analytical framework</td>
+          </tr>
+          <tr>
+            <td>Selective Disclosure Gateway</td>
+            <td>CA-controlled API gateway enforces minimum-necessary-data filtering on all cross-border transmissions; every transmission is independently logged</td>
+            <td>A standards-based interoperability control (consistent with UN/CEFACT, WCO Data Model, ASEAN DEFA, WTO TFA Art. 10 formalities principles); not a restriction on who can receive data, but on how much data they receive</td>
+            <td>Enables lawful cross-border trade data exchange while maintaining data minimization discipline; protects against bulk replication of sensitive data to foreign jurisdictions; directly relevant to CUSMA Art. 19.12 proportionality</td>
+          </tr>
+          <tr>
+            <td>Portable Trusted Records</td>
+            <td>Electronic trade records implemented per UNCITRAL MLETR in open, portable formats; stored in CA-resident PTR store; transferable between parties without losing legal standing</td>
+            <td>Defined by international legal standards (UNCITRAL MLETR) and open technical formats — provider-neutral and jurisdiction-neutral in design; any provider capable of MLETR-compliant exclusive-control architecture may support this</td>
+            <td>MLETR compliance is the foundation of electronic trade document legal standing; portability prevents vendor lock-in from undermining the legal integrity of trade records; critical for TPTN's government-relevance claims</td>
+          </tr>
+          <tr>
+            <td>Provider Portability</td>
+            <td>Architecture must support migration from one infrastructure provider to another without data loss, record invalidity, or loss of governance continuity; open standards for all APIs and record formats</td>
+            <td>A resilience and procurement discipline requirement — not a preference for any specific provider. Any provider that uses open standards and does not impose lock-in satisfies this requirement, regardless of nationality</td>
+            <td>Prevents infrastructure dependence that would undermine Canada's operational sovereignty over its trade infrastructure; also a procurement governance best practice applicable to any government-adjacent infrastructure</td>
+          </tr>
+          <tr>
+            <td>Standards-Based Procurement Language</td>
+            <td>All procurement requirements for TPTN architecture reference international or Canadian standards (ISO 27001, FIPS 140-2, UN/CEFACT, WCO Data Model, CAN/DGSI 104) rather than provider-specific capabilities or nationality requirements</td>
+            <td>International standards are by design provider-neutral and jurisdiction-neutral; they can be met by domestic or foreign providers. CAN/DGSI 104 (AI governance) applies to any AI system deployed in this context, regardless of vendor origin</td>
+            <td>Standards-based procurement is the primary legal mechanism for imposing substantive sovereignty controls without creating CUSMA challenge exposure; it is also the normal practice for government-adjacent infrastructure procurement in Canada and internationally</td>
+          </tr>
+          <tr>
+            <td>No Provider Plaintext Access to Crown-Jewel Data</td>
+            <td>Class 5–8 data is never accessible in plaintext to any external infrastructure provider; all sensitive data encrypted client-side or application-side before reaching any external environment</td>
+            <td>Defined by what the provider can technically access — a capability and architecture requirement, not a nationality restriction. A U.S. provider that cannot access plaintext poses no greater legal exposure than a Canadian provider that cannot access plaintext</td>
+            <td>The single most operationally significant control. If this holds, the remainder of the architecture — data residency, vendor relationships, geographic location — becomes secondary. If this fails, no other control can fully compensate</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- ══════════════ SECTION 10 — PATTERNS ══════════════ -->
+  <div class="section" id="s7">
+    <div class="section-header">
+      <span class="section-num">§ 10</span>
+      <h2>Architecture Patterns &amp; Anti-Patterns</h2>
+    </div>
+
+    <h3>A. Recommended Patterns</h3>
+    <div class="card-grid">
+      <div class="pattern-card good">
+        <div class="card-label">✓ Recommended Pattern</div>
+        <h4>Customer-Managed Keys (CMK)</h4>
+        <p>Operator holds all encryption keys in CA-resident HSM. Provider infrastructure never has key access. Even if the provider is compelled to produce data, they can only produce ciphertext. This is the most operationally significant control in the architecture.</p>
+      </div>
+      <div class="pattern-card good">
+        <div class="card-label">✓ Recommended Pattern</div>
+        <h4>Split Control Plane / Data Plane</h4>
+        <p>The control plane (governance decisions, key operations, access policy) runs in the CA-sovereign environment. The data plane (encrypted compute, storage) may use external cloud. The provider cannot influence governance decisions even if they host the workload.</p>
+      </div>
+      <div class="pattern-card good">
+        <div class="card-label">✓ Recommended Pattern</div>
+        <h4>Sovereign Key Custody</h4>
+        <p>Root key material never leaves the CA-resident HSM. All derived keys are wrapped before leaving the HSM. Access requires multi-party authorization. Any key access event is logged in the independent audit environment.</p>
+      </div>
+      <div class="pattern-card good">
+        <div class="card-label">✓ Recommended Pattern</div>
+        <h4>Selective Disclosure</h4>
+        <p>At every cross-border transmission, the API gateway applies minimum-necessary-data filtering. Recipients receive only what they need for their specific authorized function. Each transmission is independently authorized, scoped, and logged.</p>
+      </div>
+      <div class="pattern-card good">
+        <div class="card-label">✓ Recommended Pattern</div>
+        <h4>Data Minimization at Ingestion</h4>
+        <p>Data is classified and stripped of unnecessary elements at the point it enters the system. Fields not needed for the current workflow are not collected. This limits exposure surface before encryption is even applied.</p>
+      </div>
+      <div class="pattern-card good">
+        <div class="card-label">✓ Recommended Pattern</div>
+        <h4>Tokenization / Pseudonymization</h4>
+        <p>Sensitive identifiers are replaced with opaque tokens in external systems. The token-to-identity mapping lives only in the CA-sovereign core. External systems work with tokens, not real identities or sensitive values.</p>
+      </div>
+      <div class="pattern-card good">
+        <div class="card-label">✓ Recommended Pattern</div>
+        <h4>Portable Trusted Records (PTR Architecture)</h4>
+        <p>Electronic trade records stored in open, MLETR-compliant formats. Chain-of-custody in CA-resident PTR store. Records can be transferred between parties without vendor dependency. Verifiability is cryptographic, not platform-specific.</p>
+      </div>
+      <div class="pattern-card good">
+        <div class="card-label">✓ Recommended Pattern</div>
+        <h4>Zero-Trust Access</h4>
+        <p>No user, system, or provider is implicitly trusted. Every access request is authenticated, authorized against current policy, and logged. This applies equally to internal users, authorized partners, and external infrastructure providers.</p>
+      </div>
+      <div class="pattern-card good">
+        <div class="card-label">✓ Recommended Pattern</div>
+        <h4>Canada-Resident Audit Logging</h4>
+        <p>Audit logs stored in an environment entirely separate from application infrastructure and inaccessible to any infrastructure provider. Append-only, cryptographically chained, signed. The log store cannot be modified by any external party.</p>
+      </div>
+      <div class="pattern-card good">
+        <div class="card-label">✓ Recommended Pattern</div>
+        <h4>Envelope Encryption Architecture</h4>
+        <p>Each record encrypted with a unique DEK. The DEK wrapped with a KEK held in the HSM. Compromising one document does not compromise any other. Key rotation is operationally feasible without re-encrypting all data.</p>
+      </div>
+      <div class="pattern-card good">
+        <div class="card-label">✓ Recommended Pattern</div>
+        <h4>Provider-Neutral Technical Standards</h4>
+        <p>Procurement requirements reference international standards (FIPS 140-2, ISO 27001, UN/CEFACT, WCO Data Model) rather than vendor-specific certifications. Any provider that meets the standards may participate. This is the core procurement-safe CUSMA defence.</p>
+      </div>
+      <div class="pattern-card good">
+        <div class="card-label">✓ Recommended Pattern</div>
+        <h4>Policy-Based Routing</h4>
+        <p>Data routing decisions are made by a CA-controlled policy engine based on classification tags. Changes to routing policy require authorized operator action. No external provider can unilaterally alter data flow behaviour.</p>
+      </div>
+    </div>
+
+    <h3>B. Dangerous Anti-Patterns</h3>
+
+    <div class="pattern-card bad" style="margin-bottom: 14px;">
+      <div class="card-label">✗ Anti-Pattern</div>
+      <h4>Storing Sensitive Records in Plaintext in a Foreign Hyperscaler</h4>
+      <p><strong>Technical risk:</strong> The provider can read, copy, or be compelled to produce the data.<br><strong>Legal risk:</strong> Under instruments such as the U.S. CLOUD Act, U.S. authorities may be able to compel a U.S. cloud provider to produce data regardless of where it is stored. "Stored in Canada" is not a complete defence if the provider controls access. The specific application of this risk to any given configuration requires legal counsel review.<br><strong>Strategic risk:</strong> Any credibility claim of sovereignty collapses immediately once it becomes known that title-sensitive records or trade intelligence sit in plaintext on a foreign-controlled environment.</p>
+    </div>
+
+    <div class="pattern-card bad" style="margin-bottom: 14px;">
+      <div class="card-label">✗ Anti-Pattern</div>
+      <h4>Provider-Managed Keys Controlling Crown-Jewel Data</h4>
+      <p><strong>Technical risk:</strong> Provider-managed keys mean the provider has the decryption capability — their HSM, their root of trust, their access policies.<br><strong>Legal risk:</strong> The legal exposure analysis is the same as plaintext storage — if the provider can decrypt, they may be compellable to produce decrypted data.<br><strong>Strategic risk:</strong> Sovereignty architecture built on provider-managed keys is sovereignty architecture in name only and will not withstand scrutiny from informed government or institutional stakeholders.</p>
+    </div>
+
+    <div class="pattern-card bad" style="margin-bottom: 14px;">
+      <div class="card-label">✗ Anti-Pattern</div>
+      <h4>Centralizing All Logs with the Infrastructure Vendor</h4>
+      <p><strong>Technical risk:</strong> If the vendor controls the logs, the vendor can modify, delete, or withhold them. A self-serving audit record is not an audit record.<br><strong>Legal risk:</strong> Logs in a foreign provider environment are subject to the same legal exposure as any other data. A log that can be compelled, modified, or withheld by a foreign-controlled party is not a reliable legal instrument.<br><strong>Strategic risk:</strong> In any regulatory investigation or dispute, audit log independence is the first thing that will be challenged. Vendor-held logs fail this test.</p>
+    </div>
+
+    <div class="pattern-card bad" style="margin-bottom: 14px;">
+      <div class="card-label">✗ Anti-Pattern</div>
+      <h4>Commingling Title-Sensitive Records with Ordinary Application Data</h4>
+      <p><strong>Technical risk:</strong> Co-location creates lateral movement opportunities; a vulnerability in the low-sensitivity layer becomes a path to the high-sensitivity layer.<br><strong>Legal risk:</strong> Regulatory requirements for Class 5–8 data require demonstrable isolation. Mixed environments make it difficult to prove that sensitive records were protected to the required standard.<br><strong>Strategic risk:</strong> Any serious security audit or government review will flag mixed environments as an immediate concern. Segmentation is not optional for infrastructure with sovereignty claims.</p>
+    </div>
+
+    <div class="pattern-card bad" style="margin-bottom: 14px;">
+      <div class="card-label">✗ Anti-Pattern</div>
+      <h4>Broad Cross-Border Replication by Default</h4>
+      <p><strong>Technical risk:</strong> Default replication means sensitive data is permanently present in foreign legal environments regardless of operational need.<br><strong>Legal risk:</strong> PIPEDA and the proposed CPPA require purpose limitation and proportionality in cross-border transfers. Blanket replication is likely to present compliance problems.<br><strong>Strategic risk:</strong> Once data is replicated to a foreign environment, it is extremely difficult to recall. The sovereignty posture becomes permanently compromised for that data.</p>
+    </div>
+
+    <div class="pattern-card bad" style="margin-bottom: 14px;">
+      <div class="card-label">✗ Anti-Pattern</div>
+      <h4>Locking Portable Records Inside One Vendor Stack</h4>
+      <p><strong>Technical risk:</strong> Vendor lock-in for electronic trade records means record portability and legal continuity are at risk if the vendor relationship changes.<br><strong>Legal risk:</strong> UNCITRAL MLETR compliance requires the system controlling an electronic transferable record to be reliable and interoperable. Proprietary lock-in undermines both.<br><strong>Strategic risk:</strong> A sovereign infrastructure that can only be operated by one commercial vendor is dependent — not sovereign. This is the exact condition sovereignty architecture is designed to prevent.</p>
+    </div>
+
+    <div class="pattern-card bad" style="margin-bottom: 14px;">
+      <div class="card-label">✗ Anti-Pattern</div>
+      <h4>Using Nationality Bans Instead of Objective Control Requirements</h4>
+      <p><strong>Technical risk:</strong> Nationality bans do not address the underlying technical problem. A Canadian provider with poor key management is less secure than a U.S. provider with strong key isolation capabilities.<br><strong>Legal risk:</strong> Excluding providers by nationality is generally a weaker legal posture under CUSMA — it is the design choice most likely to create a successful trade challenge.<br><strong>Strategic risk:</strong> It transforms a defensible security architecture into an indefensible trade policy position, and discredits the entire sovereignty rationale in the process.</p>
+    </div>
+  </div>
+
+  <!-- ══════════════ SUMMARY ══════════════ -->
+  <div class="section" id="summary">
+    <div class="section-header">
+      <span class="section-num">∑</span>
+      <h2>One-Page Summary</h2>
+    </div>
+
+    <div class="callout callout-blue" style="font-size: 14px; line-height: 1.75;">
+      <strong>The core challenge:</strong> Canada wants to build digital trade infrastructure that it genuinely controls. CUSMA Chapter 19 restricts data localization mandates but does not prohibit neutral, objective security and control requirements applied equally to all providers. The design posture described in this document — and intended for TPTN — is built on that distinction.
+    </div>
+
+    <p><strong>Applied to TPTN, the architecture answer is sovereignty-by-design, not crude isolationism.</strong> This means separating what a provider can host from what a provider can see or control. Foreign cloud providers can host encrypted application workloads. They cannot hold encryption keys, access sensitive records in plaintext, control audit logs, or manage electronic transferable records.</p>
+
+    <p><strong>Five non-negotiable design principles for TPTN:</strong></p>
+    <ul>
+      <li><strong>Canadian key custody:</strong> All encryption keys for sensitive data (Class 4–8) held in CA-resident HSMs. Foreign providers have zero key access. This is the primary mechanism by which meaningful foreign legal exposure is eliminated at the data layer.</li>
+      <li><strong>Canadian audit independence:</strong> Audit logs stored in a CA-resident environment entirely separate from and inaccessible to application infrastructure providers.</li>
+      <li><strong>Canadian sovereign core for Class 4–8 data:</strong> Trade intelligence, electronic transferable records, cryptographic material, government-interface data, and audit records do not leave CA-controlled environments in plaintext.</li>
+      <li><strong>Standards-based, not nationality-based requirements:</strong> Every control references an international or Canadian standard. Any provider that satisfies the requirements may participate. No provider is excluded by nationality.</li>
+      <li><strong>Selective disclosure at every cross-border boundary:</strong> The API gateway enforces minimum-necessary-data principles on every outbound transmission. No bulk replication. Every cross-border data flow is logged.</li>
+    </ul>
+
+    <p><strong>The procurement-safe CUSMA defence posture:</strong> TPTN's architecture imposes neutral, objective, proportionate technical requirements justified by legitimate public policy objectives — evidentiary integrity, protection from foreign legal compulsion, operational sovereignty over national trade infrastructure. These requirements apply equally to all providers. They are not nationality restrictions. They are security and governance controls consistent with standards applied by the EU, Singapore, Australia, and the UK to their own sovereign digital infrastructure.</p>
+
+    <p><strong>What this architecture is not:</strong> It is not a ban on foreign providers, a restriction on lawful cross-border trade data flows, or a claim that every trade data element must remain in Canada. AWS, Microsoft Azure, and Google Cloud can participate in TPTN architecture — in the layers where their participation is appropriate and meets the control requirements. The architecture defines what Canada controls, not who Canada excludes.</p>
+  </div>
+
+  <!-- ══════════════ CHECKLIST ══════════════ -->
+  <div class="section" id="checklist">
+    <div class="section-header">
+      <span class="section-num">✓</span>
+      <h2>10-Point Sovereignty Evaluation Checklist</h2>
+    </div>
+
+    <p>Use this checklist to evaluate whether a proposed architecture is genuinely sovereign-by-design or presenting a sovereignty claim that will not withstand serious scrutiny.</p>
+
+    <ul class="checklist">
+      <li><span class="check-num">01</span><div><strong>Key Custody:</strong> Are all encryption keys for sensitive data (Class 4–8) held in a Canada-resident HSM that the infrastructure provider cannot access? "We use provider-managed keys" or "our keys are in Azure Key Vault managed by Microsoft" means the sovereignty claim at this layer is not substantiated.</div></li>
+      <li><span class="check-num">02</span><div><strong>Audit Log Independence:</strong> Are audit logs stored in an environment entirely separate from the application infrastructure provider and inaccessible to that provider? Audit logs in the same AWS account as the application are not independent evidentiary records.</div></li>
+      <li><span class="check-num">03</span><div><strong>Electronic Transferable Record Control:</strong> Do electronic trade records maintain MLETR-compliant exclusive control within a CA-resident PTR store? Can exclusive control be transferred without the document leaving the sovereign core in plaintext?</div></li>
+      <li><span class="check-num">04</span><div><strong>Data Classification Enforcement:</strong> Is there an operational classification system at ingestion that routes sensitive data classes to sovereign environments and enforces that routing by policy engine — not by human discipline alone?</div></li>
+      <li><span class="check-num">05</span><div><strong>Control Plane vs Data Plane Separation:</strong> Is the CA-resident control plane (governance, access policy, key operations) genuinely separate from the data plane, such that the external provider could be replaced without losing governance continuity?</div></li>
+      <li><span class="check-num">06</span><div><strong>Cross-Border Selective Disclosure:</strong> Does every cross-border data transmission go through a CA-controlled API gateway enforcing minimum-necessary-data filtering? Is every transmission independently logged with recipient, scope, and timestamp?</div></li>
+      <li><span class="check-num">07</span><div><strong>Provider Portability:</strong> Can the architecture migrate from one infrastructure provider to another without re-encrypting sensitive data, breaking record portability, or losing audit continuity? Vendor lock-in is a sovereignty failure mode.</div></li>
+      <li><span class="check-num">08</span><div><strong>Standards-Based Requirements:</strong> Are all security and control requirements expressed in terms of international or Canadian standards — not vendor-specific capabilities or nationality restrictions? Could any competent provider — domestic or foreign — in principle satisfy the requirements?</div></li>
+      <li><span class="check-num">09</span><div><strong>Foreign Legal Exposure Analysis:</strong> Has the architecture been reviewed for the risk that any provider in the stack has access — direct or key-based — to sensitive data that could be subject to foreign legal compulsion? Has that exposure been addressed by the key custody architecture? Determining the precise scope of this risk in any specific configuration is a matter for qualified legal counsel.</div></li>
+      <li><span class="check-num">10</span><div><strong>Operational Sovereignty Test:</strong> If the primary infrastructure provider terminated its contract tomorrow, could the platform continue operating with another provider without data loss, record invalidity, or loss of governance control? If the answer is no, the platform is dependent — not sovereign.</div></li>
+    </ul>
+  </div>
+
+  <!-- ══════════════ GLOSSARY ══════════════ -->
+  <div class="section" id="glossary">
+    <div class="section-header">
+      <span class="section-num">Ω</span>
+      <h2>Glossary</h2>
+    </div>
+
+    <div class="glossary-entry">
+      <div class="glossary-term">CUSMA Digital Trade Risk</div>
+      <p>The risk that a digital infrastructure design choice — particularly around data localization, procurement requirements, or provider restrictions — may create a higher likelihood of challenge under Chapter 19 of the Canada-United States-Mexico Agreement, which restricts data localization mandates (Art. 19.11) and protects cross-border data flows (Art. 19.12). The analysis here is architectural and policy-risk in nature; specific CUSMA obligations in any procurement or regulatory context should be assessed with qualified trade-law counsel. The risk is generally higher when requirements are based on provider nationality rather than neutral, objective technical criteria.</p>
+    </div>
+    <div class="glossary-entry">
+      <div class="glossary-term">Data Residency</div>
+      <p>The physical or logical location where data is stored — typically defined by which country's data centre contains the data. <strong>Data residency is not the same as sovereign control.</strong> Data stored in a Canadian AWS region is resident in Canada but may still be accessible to a foreign government if the provider controls the encryption keys. Residency is a necessary but not sufficient condition for the sovereignty posture described in this document.</p>
+    </div>
+    <div class="glossary-entry">
+      <div class="glossary-term">Sovereign Control</div>
+      <p>The ability of a Canadian operator to make and enforce decisions about who can access, modify, or compel production of data and systems — independent of the infrastructure provider's legal exposure to foreign governments. True sovereign control requires: (1) Canadian key custody, (2) Canadian audit log independence, (3) Canadian-controlled governance of access policy, and (4) the ability to operate without dependence on any single foreign provider. Data residency alone does not constitute sovereign control.</p>
+    </div>
+    <div class="glossary-entry">
+      <div class="glossary-term">Customer-Managed Keys (CMK)</div>
+      <p>An encryption architecture in which the customer — not the cloud provider — generates, holds, and controls the encryption keys used to protect data. The provider's infrastructure stores encrypted data but never has access to the key material needed to decrypt it. Major cloud providers support CMK through mechanisms like AWS External Key Store (XKS), Azure Customer-Managed Keys, and Google Cloud CMEK. Under a proper CMK architecture, a legal order compelling the provider to produce data yields only ciphertext, not plaintext.</p>
+    </div>
+    <div class="glossary-entry">
+      <div class="glossary-term">HSM (Hardware Security Module)</div>
+      <p>A dedicated, tamper-resistant hardware device designed to securely generate, store, and perform operations with cryptographic keys. Root key material generated in an HSM is designed never to leave the hardware boundary in plaintext. HSMs are certified to FIPS 140-2 or FIPS 140-3 standards (Level 2 or Level 3 for high-security applications). In the TPTN design approach, a Canada-resident HSM cluster operated by Canadian personnel under Canadian governance is the foundation of the key custody architecture.</p>
+    </div>
+    <div class="glossary-entry">
+      <div class="glossary-term">Zero Trust</div>
+      <p>A security architecture principle that assumes no user, system, or network segment should be implicitly trusted — including those inside the organization's own perimeter. Every access request must be explicitly authenticated, authorized against current policy, and logged. Zero trust prevents lateral movement and is essential for protecting a multi-layer platform where different zones have different sensitivity levels and different provider access profiles.</p>
+    </div>
+    <div class="glossary-entry">
+      <div class="glossary-term">Selective Disclosure</div>
+      <p>A design pattern in which a system shares only the minimum information necessary for a specific, authorized purpose. In a digital trade context, selective disclosure means a customs authority receives only the fields it legally requires for clearance — not the full commercial transaction record. Applied at the API gateway, selective disclosure is both a data minimization control and a proportionality mechanism relevant to CUSMA Art. 19.12 analysis.</p>
+    </div>
+    <div class="glossary-entry">
+      <div class="glossary-term">Portable Trusted Record (PTR)</div>
+      <p>An electronic trade record — such as an electronic Bill of Lading or electronic CMR — that maintains legal standing equivalent to its paper counterpart, can be transferred between parties without losing validity, is not dependent on a single vendor's platform for its enforceability, and maintains an immutable chain of custody. PTRs in the TPTN design approach are aligned with UNCITRAL MLETR, which defines the conditions under which an electronic record can function as an electronic transferable record with full legal standing. The architecture must guarantee exclusive control at all times.</p>
+    </div>
+    <div class="glossary-entry">
+      <div class="glossary-term">Plaintext Exposure</div>
+      <p>The condition in which sensitive data is accessible to a party — such as an infrastructure provider — in its unencrypted, human-readable or machine-processable form. Plaintext exposure is the primary sovereignty failure mode: if a foreign infrastructure provider has plaintext access to sensitive trade records, the sovereignty architecture has not achieved its objectives regardless of data geography. Eliminating plaintext exposure for sensitive data classes is the first design objective of the architecture described in this document.</p>
+    </div>
+    <div class="glossary-entry">
+      <div class="glossary-term">Interoperability Gateway</div>
+      <p>In this architecture, the API/integration gateway (Layer 06) that manages all data exchange between the sovereign core and external systems — foreign governments, logistics partners, banks, ASEAN counterparties. The gateway enforces protocol normalization (translating between UN/CEFACT, ASEAN DEFA, and other standards formats), selective disclosure, encrypted transit, authentication, and per-transmission audit logging. It is the controlled chokepoint through which all cross-border data flows, enabling both lawful interoperability and the sovereignty control posture described throughout this document.</p>
+    </div>
+  </div>
+
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span>TransPacific Trade Nexus (TPTN) — Sovereign Cloud &amp; CUSMA Architecture Brief</span>
+  <span>This document is intended as architecture and policy analysis for discussion purposes and does not constitute legal advice.</span>
+</footer>
+
+<script>
+  const sections = document.querySelectorAll('.section, #hero');
+  const navLinks = document.querySelectorAll('#sidebar nav a');
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        navLinks.forEach(link => {
+          link.classList.remove('active');
+          const href = link.getAttribute('href');
+          if (href === '#' + entry.target.id) {
+            link.classList.add('active');
+          }
+        });
+      }
+    });
+  }, { threshold: 0.1, rootMargin: '-5% 0px -85% 0px' });
+
+  sections.forEach(s => observer.observe(s));
+</script>
+</body>
+</html>
