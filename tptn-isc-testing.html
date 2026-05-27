@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TransPacific Trade Nexus — ISC Testing Stream Proposal T12-022084</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: Arial, Helvetica, "Liberation Sans", sans-serif;
+    color: #1B2A4A;
+    background: #FFFFFF;
+    line-height: 1.55;
+    font-size: 16px;
+  }
+  a { color: #1B5FAD; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  /* Top status bar */
+  .status-bar {
+    background: #1B2A4A;
+    color: #FFFFFF;
+    font-size: 13px;
+    padding: 8px 24px;
+    text-align: center;
+    letter-spacing: 0.2px;
+  }
+  .status-bar strong { color: #FFFFFF; }
+
+  /* Header / Nav */
+  header {
+    background: #FFFFFF;
+    border-bottom: 1px solid #E2E8F0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+  .header-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 16px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .brand img {
+    height: 40px;
+    width: auto;
+  }
+  .brand .wordmark {
+    font-weight: 700;
+    font-size: 20px;
+    color: #1B2A4A;
+    letter-spacing: 1px;
+  }
+  .brand .wordmark .accent { color: #C8201A; }
+  .brand-sub {
+    font-size: 12px;
+    color: #4A5568;
+    margin-top: 2px;
+    letter-spacing: 0.3px;
+  }
+  nav ul {
+    list-style: none;
+    display: flex;
+    gap: 22px;
+    flex-wrap: wrap;
+  }
+  nav a {
+    color: #1B2A4A;
+    font-size: 14px;
+    font-weight: 600;
+  }
+  nav a:hover {
+    color: #C8201A;
+    text-decoration: none;
+  }
+
+  /* Hero */
+  .hero {
+    background: #1B2A4A;
+    color: #FFFFFF;
+    padding: 64px 24px 56px;
+  }
+  .hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .hero-tag {
+    display: inline-block;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.18);
+    color: #FFFFFF;
+    font-size: 12px;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    padding: 6px 12px;
+    border-radius: 2px;
+    margin-bottom: 20px;
+  }
+  .hero h1 {
+    font-size: 36px;
+    line-height: 1.25;
+    font-weight: 700;
+    max-width: 900px;
+    margin-bottom: 18px;
+  }
+  .hero p.lede {
+    font-size: 17px;
+    line-height: 1.6;
+    max-width: 820px;
+    color: #D9E2EC;
+    margin-bottom: 32px;
+  }
+  .caveat {
+    background: rgba(200, 146, 42, 0.10);
+    border-left: 4px solid #C8922A;
+    padding: 14px 18px;
+    color: #F0F4F8;
+    font-size: 14px;
+    line-height: 1.55;
+    max-width: 900px;
+    margin-bottom: 32px;
+    border-radius: 0 3px 3px 0;
+  }
+  .cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+  .btn {
+    display: inline-block;
+    padding: 13px 22px;
+    font-size: 14px;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    border: 2px solid transparent;
+    cursor: pointer;
+    transition: all 0.15s ease;
+    text-align: center;
+    text-decoration: none;
+  }
+  .btn-primary {
+    background: #C8201A;
+    color: #FFFFFF;
+    border-color: #C8201A;
+  }
+  .btn-primary:hover {
+    background: #A81813;
+    border-color: #A81813;
+    color: #FFFFFF;
+    text-decoration: none;
+  }
+  .btn-secondary {
+    background: transparent;
+    color: #FFFFFF;
+    border-color: #FFFFFF;
+  }
+  .btn-secondary:hover {
+    background: #FFFFFF;
+    color: #1B2A4A;
+    text-decoration: none;
+  }
+  .btn-tertiary {
+    background: #1B5FAD;
+    color: #FFFFFF;
+    border-color: #1B5FAD;
+  }
+  .btn-tertiary:hover {
+    background: #154A88;
+    border-color: #154A88;
+    color: #FFFFFF;
+    text-decoration: none;
+  }
+
+  /* Section base */
+  section {
+    padding: 64px 24px;
+  }
+  .section-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .section-label {
+    font-size: 12px;
+    font-weight: 700;
+    color: #C8201A;
+    letter-spacing: 1.6px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  h2 {
+    font-size: 28px;
+    color: #1B2A4A;
+    margin-bottom: 14px;
+    line-height: 1.3;
+    font-weight: 700;
+  }
+  .section-intro {
+    color: #4A5568;
+    max-width: 820px;
+    margin-bottom: 36px;
+    font-size: 16px;
+  }
+
+  /* Alternating section background */
+  .bg-light { background: #F0F4F8; }
+
+  /* Snapshot grid */
+  .snapshot-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+  }
+  .snapshot-card {
+    background: #FFFFFF;
+    border: 1px solid #D9E2EC;
+    border-top: 3px solid #1B5FAD;
+    padding: 20px;
+  }
+  .snapshot-card .label {
+    font-size: 11px;
+    color: #4A5568;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 8px;
+    font-weight: 700;
+  }
+  .snapshot-card .value {
+    font-size: 16px;
+    color: #1B2A4A;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+  .snapshot-card .card-note {
+    font-size: 12px;
+    color: #4A5568;
+    line-height: 1.5;
+    margin-top: 8px;
+    padding-top: 8px;
+    border-top: 1px solid #E2E8F0;
+  }
+
+  /* Why This Matters hero card */
+  .why-card {
+    background: rgba(27, 95, 173, 0.10);
+    border-left: 4px solid #1B5FAD;
+    padding: 16px 20px;
+    color: #D9E2EC;
+    font-size: 14px;
+    line-height: 1.65;
+    max-width: 900px;
+    margin-bottom: 32px;
+    border-radius: 0 3px 3px 0;
+  }
+  .why-card .why-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.3px;
+    text-transform: uppercase;
+    color: #FFFFFF;
+    opacity: 0.7;
+    margin-bottom: 8px;
+  }
+
+  /* Pathway section */
+  .pathway-box {
+    background: #FFFFFF;
+    border: 1px solid #D9E2EC;
+    border-left: 4px solid #1B2A4A;
+    padding: 24px 28px;
+    font-size: 15px;
+    color: #1B2A4A;
+    line-height: 1.7;
+    max-width: 900px;
+  }
+
+  /* Test areas grid (six cards) */
+  .test-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 18px;
+  }
+  .test-card {
+    background: #FFFFFF;
+    border: 1px solid #D9E2EC;
+    padding: 24px;
+    border-left: 3px solid #C8201A;
+  }
+  .test-card .num {
+    font-size: 12px;
+    color: #C8201A;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    margin-bottom: 8px;
+  }
+  .test-card h3 {
+    font-size: 16px;
+    color: #1B2A4A;
+    margin-bottom: 8px;
+    line-height: 1.35;
+  }
+  .test-card p {
+    font-size: 14px;
+    color: #4A5568;
+    line-height: 1.55;
+  }
+
+  /* Scenario steps */
+  .steps {
+    counter-reset: step;
+    display: grid;
+    gap: 14px;
+  }
+  .step {
+    background: #FFFFFF;
+    border: 1px solid #D9E2EC;
+    padding: 18px 22px 18px 64px;
+    position: relative;
+    counter-increment: step;
+  }
+  .step::before {
+    content: counter(step);
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 32px;
+    height: 32px;
+    background: #1B2A4A;
+    color: #FFFFFF;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 32px;
+    text-align: center;
+  }
+  .step p { color: #1B2A4A; font-size: 15px; line-height: 1.55; }
+  .scenario-note {
+    margin-top: 22px;
+    padding: 14px 18px;
+    background: #FFFFFF;
+    border-left: 3px solid #1B5FAD;
+    font-size: 14px;
+    color: #1B2A4A;
+    font-style: italic;
+  }
+
+  /* Table */
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid #D9E2EC;
+    background: #FFFFFF;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    min-width: 720px;
+  }
+  thead {
+    background: #1B2A4A;
+    color: #FFFFFF;
+  }
+  th, td {
+    text-align: left;
+    padding: 14px 16px;
+    vertical-align: top;
+    border-bottom: 1px solid #E2E8F0;
+  }
+  th {
+    font-size: 13px;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+  tbody tr:nth-child(even) { background: #F7FAFC; }
+  td:first-child { font-weight: 600; color: #1B2A4A; width: 24%; }
+  td:nth-child(2) { color: #4A5568; width: 38%; }
+  td:nth-child(3) { color: #4A5568; }
+
+  /* Reviewer path */
+  .path-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    margin-bottom: 28px;
+  }
+  .path-step {
+    background: #FFFFFF;
+    border: 1px solid #D9E2EC;
+    padding: 18px 16px;
+  }
+  .path-step .num {
+    display: inline-block;
+    background: #1B5FAD;
+    color: #FFFFFF;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 26px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  .path-step .text {
+    font-size: 14px;
+    color: #1B2A4A;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  /* Deployment list */
+  .deployment-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 14px;
+    list-style: none;
+  }
+  .deployment-list li {
+    background: #FFFFFF;
+    border: 1px solid #D9E2EC;
+    padding: 16px 18px 16px 44px;
+    position: relative;
+    font-size: 14px;
+    color: #1B2A4A;
+    line-height: 1.5;
+  }
+  .deployment-list li::before {
+    content: "";
+    position: absolute;
+    left: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 10px;
+    height: 10px;
+    background: #C8201A;
+    border-radius: 2px;
+  }
+
+  /* Caution card */
+  .caution-card {
+    background: #FFFFFF;
+    border: 1px solid #C8922A;
+    border-left: 6px solid #C8922A;
+    padding: 28px 30px;
+  }
+  .caution-card h3 {
+    color: #1B2A4A;
+    font-size: 18px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .caution-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    min-width: 24px;
+    background: #C8922A;
+    color: #FFFFFF;
+    border-radius: 50%;
+    font-weight: 700;
+    font-size: 14px;
+    line-height: 1;
+  }
+  .caution-card ul {
+    list-style: none;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 8px 24px;
+  }
+  .caution-card li {
+    padding: 6px 0 6px 18px;
+    position: relative;
+    font-size: 14px;
+    color: #1B2A4A;
+    line-height: 1.5;
+  }
+  .caution-card li::before {
+    content: "\2014";
+    position: absolute;
+    left: 0;
+    color: #C8922A;
+    font-weight: 700;
+  }
+
+  /* Status note */
+  .status-note {
+    background: #F0F4F8;
+    border: 1px dashed #1B5FAD;
+    padding: 18px 22px;
+    margin-top: 28px;
+    font-size: 13px;
+    color: #4A5568;
+    line-height: 1.6;
+  }
+  .status-note strong { color: #1B2A4A; }
+
+  /* Contact block */
+  .contact-block {
+    background: #1B2A4A;
+    color: #FFFFFF;
+    padding: 36px 30px;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 32px;
+    align-items: center;
+  }
+  .contact-block p { color: #D9E2EC; font-size: 15px; line-height: 1.6; }
+  .contact-block .ref {
+    font-size: 13px;
+    color: #C8922A;
+    margin-top: 12px;
+    letter-spacing: 0.5px;
+  }
+  .contact-card .name {
+    font-size: 18px;
+    font-weight: 700;
+    color: #FFFFFF;
+    margin-bottom: 4px;
+  }
+  .contact-card .role {
+    font-size: 13px;
+    color: #D9E2EC;
+    margin-bottom: 14px;
+    line-height: 1.5;
+  }
+  .contact-card a {
+    display: block;
+    color: #FFFFFF;
+    font-size: 14px;
+    margin-bottom: 6px;
+    word-break: break-all;
+  }
+  .contact-card a:hover { color: #C8922A; text-decoration: none; }
+
+  /* Footer */
+  footer {
+    background: #0F1A30;
+    color: #A0AEC0;
+    padding: 24px;
+    text-align: center;
+    font-size: 12px;
+    line-height: 1.6;
+  }
+  footer strong { color: #FFFFFF; }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .hero h1 { font-size: 26px; }
+    .hero p.lede { font-size: 15px; }
+    h2 { font-size: 22px; }
+    nav ul { gap: 14px; }
+    nav a { font-size: 13px; }
+    section { padding: 48px 20px; }
+    .hero { padding: 48px 20px; }
+    .contact-block {
+      grid-template-columns: 1fr;
+      padding: 28px 22px;
+    }
+    .btn { width: 100%; display: block; }
+    .cta-row { flex-direction: column; }
+  }
+  @media (max-width: 480px) {
+    .header-inner { flex-direction: column; align-items: flex-start; }
+    nav ul { width: 100%; gap: 12px; }
+    nav a { font-size: 12px; }
+    .step { padding: 18px 18px 18px 56px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Top Status Bar -->
+<div class="status-bar">
+  <strong>ISC Testing Stream</strong> &nbsp;&middot;&nbsp; Proposal ID T12-022084 &nbsp;&middot;&nbsp; Theme: Artificial Intelligence (AI) &nbsp;&middot;&nbsp; Status: Available for testing
+</div>
+
+<!-- Sticky Header -->
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <img src="assets/tptn-logo-small.png" alt="TPTN" height="40" style="height:40px;width:auto;display:block;" onerror="this.style.display='none'">
+      <div>
+        <div class="wordmark">TPTN<span class="accent">.</span></div>
+        <div class="brand-sub">TransPacific Trade Nexus / SynergAI</div>
+      </div>
+    </div>
+    <nav>
+      <ul>
+        <li><a href="#snapshot">Listing</a></li>
+        <li><a href="#test-areas">Scope</a></li>
+        <li><a href="#scenario">Scenario</a></li>
+        <li><a href="#evidence">Evidence</a></li>
+        <li><a href="#reviewer">Reviewer Path</a></li>
+        <li><a href="#deployment">Access</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag">ISC Testing Stream Candidate &mdash; Controlled Prototype</div>
+    <h1>AI-assisted trade compliance infrastructure for audit-ready export workflows</h1>
+    <p class="lede">TPTN is a Canadian-built prototype designed to help government testing departments assess AI-assisted document processing, trade-rule validation, FTA eligibility logic, ESG workflow support, human-in-the-loop review, and audit-ready export records.</p>
+
+    <div class="caveat">
+      TPTN is a clickable prototype using fictitious or sanitized data. It is available for Government of Canada testing consideration through ISC Testing Stream Proposal ID T12-022084. No live government integration, production deployment, or executed pilot is implied.
+    </div>
+
+    <div class="why-card">
+      <div class="why-label">Why This Matters</div>
+      Canadian SMEs entering new export corridors often face fragmented portals, repeated documentation, unclear regulatory requirements, and limited internal compliance capacity. TPTN is designed to test whether AI-assisted workflows can reduce that burden while preserving auditability, human review, and public-sector trust requirements.
+    </div>
+
+    <div class="cta-row">
+      <a href="demo.html" class="btn btn-primary">Launch Guided Demonstrator</a>
+      <a href="#scenario" class="btn btn-secondary">View Testing Scenario</a>
+      <a href="mailto:chris@synergai.ai?subject=ISC%20Testing%20Stream%20Walkthrough%20Request%20-%20T12-022084" class="btn btn-tertiary">Request Departmental Walkthrough</a>
+    </div>
+  </div>
+</section>
+
+<!-- Section 1: ISC Listing Snapshot -->
+<section id="snapshot">
+  <div class="section-inner">
+    <div class="section-label">Section 1</div>
+    <h2>ISC Listing Snapshot</h2>
+    <p class="section-intro">Reference information for departmental reviewers assessing this innovation through the Innovative Solutions Canada Testing Stream pool.</p>
+
+    <div class="snapshot-grid">
+      <div class="snapshot-card">
+        <div class="label">Proposal ID</div>
+        <div class="value">T12-022084</div>
+      </div>
+      <div class="snapshot-card">
+        <div class="label">Theme</div>
+        <div class="value">Artificial Intelligence (AI)</div>
+      </div>
+      <div class="snapshot-card">
+        <div class="label">Status</div>
+        <div class="value">Available for testing</div>
+      </div>
+      <div class="snapshot-card">
+        <div class="label">Innovation</div>
+        <div class="value">TransPacific Trade Nexus (TPTN)</div>
+      </div>
+      <div class="snapshot-card">
+        <div class="label">Company</div>
+        <div class="value">16422411 Canada Inc.</div>
+      </div>
+      <div class="snapshot-card">
+        <div class="label">Testing Posture</div>
+        <div class="value">Controlled Prototype &mdash; Government Testing Candidate</div>
+      </div>
+      <div class="snapshot-card">
+        <div class="label">Technical Evaluation Score</div>
+        <div class="value">92 / 96</div>
+        <div class="card-note">Reflects evaluation against ISC TS12 criteria; not a procurement commitment, contract award, or guarantee of departmental testing.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ISC Pathway Explainer -->
+<section id="pathway">
+  <div class="section-inner">
+    <div class="section-label">How It Works</div>
+    <h2>How the ISC Testing Stream Pathway Works</h2>
+    <div class="pathway-box">
+      TPTN is listed in the ISC Testing Stream pool as available for Government of Canada testing consideration. A federal department may identify an innovation from the pool and work through ISC to assess whether a controlled testing arrangement is appropriate. Testing interest does not imply procurement, adoption, endorsement, or production deployment. Any future testing arrangement would be subject to departmental fit, ISC process requirements, contracting, security, privacy, and operational readiness review.
+    </div>
+  </div>
+</section>
+
+<!-- Section 2: What a Department Would Test -->
+<section id="test-areas" class="bg-light">
+  <div class="section-inner">
+    <div class="section-label">Section 2</div>
+    <h2>What a Department Would Test</h2>
+    <p class="section-intro">Six functional areas of the prototype are available for departmental assessment under a controlled testing arrangement.</p>
+
+    <div class="test-grid">
+      <div class="test-card">
+        <div class="num">01</div>
+        <h3>Document Ingestion and Structured Data Extraction</h3>
+        <p>AI-assisted parsing of fictitious or sanitized trade documents into structured, queryable data fields.</p>
+      </div>
+      <div class="test-card">
+        <div class="num">02</div>
+        <h3>Trade-Rule Validation and Compliance Checks</h3>
+        <p>Automated validation against HS codes, permits, restricted-party indicators, and documentation requirements.</p>
+      </div>
+      <div class="test-card">
+        <div class="num">03</div>
+        <h3>FTA Eligibility and Tariff Logic</h3>
+        <p>Free trade agreement eligibility assessment, rules-of-origin checks, and preferential tariff routing logic.</p>
+      </div>
+      <div class="test-card">
+        <div class="num">04</div>
+        <h3>ESG Reporting Workflow Support</h3>
+        <p>Structured workflow scaffolding for environmental, social, and governance disclosures linked to shipment records.</p>
+      </div>
+      <div class="test-card">
+        <div class="num">05</div>
+        <h3>Human-in-the-Loop Uncertainty Review</h3>
+        <p>Confidence thresholds route low-certainty outputs to a designated reviewer queue for human adjudication.</p>
+      </div>
+      <div class="test-card">
+        <div class="num">06</div>
+        <h3>Audit Trail and Structured Evidence Export</h3>
+        <p>Timestamped, tamper-evident audit logs and structured evidence packages suitable for regulator review.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Section 3: Low-Burden Government Test Scenario -->
+<section id="scenario">
+  <div class="section-inner">
+    <div class="section-label">Section 3</div>
+    <h2>Low-Burden Government Test Scenario</h2>
+    <p class="section-intro">A controlled, six-step assessment path that does not require integration with live departmental systems.</p>
+
+    <div class="steps">
+      <div class="step"><p>Department provides fictitious or sanitized trade documents.</p></div>
+      <div class="step"><p>TPTN ingests and extracts structured data.</p></div>
+      <div class="step"><p>AI-assisted logic checks HS codes, FTA eligibility, permits, restricted-party indicators, and documentation requirements.</p></div>
+      <div class="step"><p>Uncertain outputs are flagged for human review.</p></div>
+      <div class="step"><p>Audit records are generated with timestamped evidence.</p></div>
+      <div class="step"><p>Department reviews usability, traceability, accuracy, and testing metrics.</p></div>
+    </div>
+
+    <div class="scenario-note">
+      No live integration with Government of Canada systems is required for an initial controlled test.
+    </div>
+
+    <div style="margin-top: 28px;">
+      <a href="assets/TPTN-ISC-Test-Scenario.pdf" class="btn btn-tertiary">Download One-Page Test Scenario</a>
+    </div>
+  </div>
+</section>
+
+<!-- Section 4: Evidence and Metrics -->
+<section id="evidence" class="bg-light">
+  <div class="section-inner">
+    <div class="section-label">Section 4</div>
+    <h2>Evidence and Metrics to Be Tested</h2>
+    <p class="section-intro">Each test area maps to a measurable indicator and a corresponding evidence artifact suitable for departmental review.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Test Area</th>
+            <th>What is Measured</th>
+            <th>Example Evidence</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Document Parsing Accuracy</td>
+            <td>Extraction accuracy across PDFs, JPEGs, and XML files</td>
+            <td>Comparison against annotated test documents</td>
+          </tr>
+          <tr>
+            <td>Trade-Rule Validation Latency</td>
+            <td>Response time for HS code, permit, restricted-party indicators, and FTA checks</td>
+            <td>System logs and test runs</td>
+          </tr>
+          <tr>
+            <td>FTA Optimization Accuracy</td>
+            <td>Alignment with published tariff schedules</td>
+            <td>Benchmark comparison</td>
+          </tr>
+          <tr>
+            <td>ESG Estimate Workflow</td>
+            <td>Variance against selected emissions methodology</td>
+            <td>Scenario comparison</td>
+          </tr>
+          <tr>
+            <td>Audit Log Integrity</td>
+            <td>Traceability and tamper-evident event capture</td>
+            <td>Audit event logs</td>
+          </tr>
+          <tr>
+            <td>Usability and Confidence</td>
+            <td>Reviewer and SME user feedback</td>
+            <td>Structured survey / walkthrough notes</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- Section 5: Recommended Reviewer Path -->
+<section id="reviewer">
+  <div class="section-inner">
+    <div class="section-label">Section 5</div>
+    <h2>Recommended Reviewer Path</h2>
+    <p class="section-intro">A sequenced walkthrough designed to give departmental reviewers a complete picture of TPTN's design intent and testing surface.</p>
+
+    <div class="path-list">
+      <div class="path-step">
+        <div class="num">1</div>
+        <div class="text">Start with Government Oversight View</div>
+      </div>
+      <div class="path-step">
+        <div class="num">2</div>
+        <div class="text">Review Exporter Workflow</div>
+      </div>
+      <div class="path-step">
+        <div class="num">3</div>
+        <div class="text">Review TPTN Trade Agent</div>
+      </div>
+      <div class="path-step">
+        <div class="num">4</div>
+        <div class="text">Inspect Flagged Uncertainty / HITL Review</div>
+      </div>
+      <div class="path-step">
+        <div class="num">5</div>
+        <div class="text">Review Audit Trail and Structured Output</div>
+      </div>
+      <div class="path-step">
+        <div class="num">6</div>
+        <div class="text">View Testing Metrics Dashboard</div>
+      </div>
+    </div>
+
+    <a href="demo.html" class="btn btn-primary">Launch Guided Demonstrator</a>
+  </div>
+</section>
+
+<!-- Section 6: Deployment and Access -->
+<section id="deployment" class="bg-light">
+  <div class="section-inner">
+    <div class="section-label">Section 6</div>
+    <h2>Deployment and Access for Testing</h2>
+    <p class="section-intro">Practical considerations for departments preparing to assess TPTN in a controlled sandbox environment.</p>
+
+    <ul class="deployment-list">
+      <li>Browser-based access</li>
+      <li>No specialized hardware required</li>
+      <li>Fictitious or sanitized data only</li>
+      <li>Canadian-hosted deployment path planned for testing</li>
+      <li>Role-based access control planned for test environment</li>
+      <li>Departmental technical liaison may be required for sandbox setup</li>
+      <li>No production data required for first review</li>
+      <li>No departmental data upload required for initial walkthrough.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- Section 7: Status and Boundaries -->
+<section id="status">
+  <div class="section-inner">
+    <div class="section-label">Section 7</div>
+    <h2>Status and Boundaries</h2>
+    <p class="section-intro">Clear delineation of current readiness, scope of testing, and the limits of what departmental assessment would establish.</p>
+
+    <div class="caution-card">
+      <h3><span class="caution-icon">!</span> Current Status &mdash; Controlled Prototype</h3>
+      <ul>
+        <li>Prototype stage</li>
+        <li>No live government integration</li>
+        <li>No production deployment</li>
+        <li>No executed pilot implied</li>
+        <li>Testing would validate design intent, usability, workflow accuracy, and operational fit</li>
+        <li>All AI-assisted outputs remain subject to human review</li>
+      </ul>
+    </div>
+
+    <div class="status-note">
+      <strong>Standards Note.</strong> DGC-VV-2025-07 is an interim acknowledgement of completed MLETR self-assessment, not certification or endorsement. Full conformance testing remains pending.
+    </div>
+  </div>
+</section>
+
+<!-- Section 8: Contact -->
+<section id="contact" class="bg-light">
+  <div class="section-inner">
+    <div class="section-label">Section 8</div>
+    <h2>Contact and Next Step</h2>
+    <p class="section-intro">Government of Canada departments interested in assessing TPTN may reference ISC Testing Stream Proposal ID T12-022084 when initiating testing interest.</p>
+
+    <div class="contact-block">
+      <div>
+        <p>To initiate a departmental walkthrough, request a controlled sandbox briefing, or coordinate a test scenario aligned to your assessment criteria, please use the contact details provided. Initial engagement does not require production data or live system access.</p>
+        <div class="ref">Reference: ISC Testing Stream Proposal ID T12-022084</div>
+      </div>
+      <div class="contact-card">
+        <div class="name">Chris Papp</div>
+        <div class="role">Founder &amp; CEO<br>TransPacific Trade Nexus / SynergAI</div>
+        <a href="mailto:chris@synergai.ai?subject=ISC%20Testing%20Stream%20Walkthrough%20Request%20-%20T12-022084">chris@synergai.ai</a>
+        <a href="https://tptnexus.com" target="_blank" rel="noopener noreferrer">tptnexus.com</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+
+<div style="background:#F0F4F8;border-top:1px solid #D9E2EC;padding:16px 24px;text-align:center;font-size:12px;color:#4A5568;line-height:1.6;">
+  This page is maintained by TransPacific Trade Nexus / SynergAI to support departmental review of ISC Testing Stream Proposal ID T12-022084. It is not an official Government of Canada or ISC webpage.
+</div>
+
+<footer>
+  <strong>TransPacific Trade Nexus (TPTN)</strong> &mdash; ISC Testing Stream Proposal T12-022084.<br>
+  Prototype demonstration using fictitious or sanitized data.
+</footer>
+
+</body>
+</html>
